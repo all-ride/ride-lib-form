@@ -41,9 +41,23 @@ class OptionRow extends AbstractRow {
      */
     public function processData(array $values) {
         if (isset($values[$this->name])) {
-            $this->data = $values[$this->name];
+            $data = $values[$this->name];
+
+            if ($this->getOption(self::OPTION_MULTISELECT) && is_array($data)) {
+                $newData = array();
+
+                foreach ($data as $key => $value) {
+                    $newData[$value] = $value;
+                }
+
+                $data = $newData;
+            }
+
+            $this->data = $data;
         } elseif (!$this->getOption(self::OPTION_OPTIONS) && !$this->getOption(self::OPTION_MULTISELECT)) {
             $this->data = false;
+        } elseif ($this->getOption(self::OPTION_MULTISELECT)) {
+            $this->data = array();
         }
     }
 

@@ -15,29 +15,4 @@ class SelectRow extends OptionRow {
      */
     const TYPE = 'select';
 
-    /**
-     * Sets the data to this row
-     * @param mixed $data
-     * @return null
-     */
-    public function processData(array $values) {
-        if (!isset($values[$this->name])) {
-            return;
-        }
-
-        $data = $values[$this->name];
-
-        if ($this->getOption(self::OPTION_MULTISELECT) && is_array($data)) {
-            $newData = array();
-
-            foreach ($data as $key => $value) {
-                $newData[$value] = $value;
-            }
-
-            $data = $newData;
-        }
-
-        $this->data = $data;
-    }
-
 }

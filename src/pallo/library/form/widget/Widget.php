@@ -21,16 +21,18 @@ interface Widget {
 
     /**
      * Sets the value for this widget
-     * @param mixed $value
+     * @param mixed $value Value to set
+     * @param string $part Name of the part
      * @return null
      */
-    public function setValue($value);
+    public function setValue($value, $part = null);
 
     /**
      * Gets the value for this widget
+     * @param string $part Name of the part
      * @return mixed
      */
-    public function getValue();
+    public function getValue($part = null);
 
     /**
      * Gets the attributes for this widget

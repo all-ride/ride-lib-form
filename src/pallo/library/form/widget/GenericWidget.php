@@ -64,19 +64,33 @@ class GenericWidget implements Widget {
 
     /**
      * Sets the value for this widget
-     * @param mixed $value
+     * @param mixed $value Value to set
+     * @param string $part Name of the part
      * @return null
      */
-    public function setValue($value) {
-        $this->value = $value;
+    public function setValue($value, $part = null) {
+        if ($part !== null) {
+            $this->value[$part] = $value;
+        } else {
+            $this->value = $value;
+        }
     }
 
     /**
      * Gets the value for this widget
+     * @param string $part Name of the part
      * @return mixed
-     */
-    public function getValue() {
-        return $this->value;
+    */
+    public function getValue($part = null) {
+        if ($part !== null) {
+            if (is_array($this->value) && isset($this->value[$part])) {
+                return $this->value[$part];
+            } else {
+                return null;
+            }
+        } else {
+            return $this->value;
+        }
     }
 
     /**

@@ -20,6 +20,19 @@ interface Widget {
     public function getName();
 
     /**
+     * Sets whether this widget contains an array value
+     * @param boolean $isArray
+     * @return null
+     */
+    public function setIsArray($isArray);
+
+    /**
+     * Gets whether this widget contains an array value
+     * @return boolean
+     */
+    public function isArray();
+
+    /**
      * Sets the value for this widget
      * @param mixed $value Value to set
      * @param string $part Name of the part

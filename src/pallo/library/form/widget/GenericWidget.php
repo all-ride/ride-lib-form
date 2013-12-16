@@ -32,6 +32,12 @@ class GenericWidget implements Widget {
     protected $attributes;
 
     /**
+     * Flag to see if this widget contains an array value
+     * @var boolean
+     */
+    protected $isArray;
+
+    /**
      * Constructs a new widget
      * @param string $type Type of the widget
      * @param string $name Name of the row
@@ -39,11 +45,12 @@ class GenericWidget implements Widget {
      * @param array $attributes Extra attributes
      * @return null
      */
-    public function __construct($type, $name, $value = null, array $attributes = array()) {
+    public function __construct($type, $name, $value = null, array $attributes = array(), $isArray = false) {
         $this->type = $type;
         $this->name = $name;
         $this->value = $value;
         $this->attributes = $attributes;
+        $this->isArray = $isArray;
     }
 
     /**
@@ -60,6 +67,23 @@ class GenericWidget implements Widget {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * Sets whether this widget contains an array value
+     * @param boolean $isArray
+     * @return null
+     */
+    public function setIsArray($isArray) {
+        $this->isArray = $isArray;
+    }
+
+    /**
+     * Gets whether this widget contains an array value
+     * @return boolean
+     */
+    public function isArray() {
+        return $this->isArray;
     }
 
     /**

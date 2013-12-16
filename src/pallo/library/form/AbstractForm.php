@@ -273,6 +273,13 @@ abstract class AbstractForm implements Form {
 
             $row->buildRow($namePrefix, $idPrefix, $this->validationFactory);
         }
+
+        if ($data != null) {
+            $this->isSubmitted = true;
+            $this->dataNeedsProcessing = true;
+        } else {
+            $this->isSubmitted = false;
+        }
     }
 
     /**

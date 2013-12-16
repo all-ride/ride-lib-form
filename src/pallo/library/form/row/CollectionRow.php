@@ -81,7 +81,7 @@ class CollectionRow extends AbstractFormBuilderRow {
             return array();
         }
 
-        if (!$this->field) {
+        if (!$this->widget) {
             foreach ($this->rows as $name => $row) {
                 if ($name === self::VALUE_PROTOTYPE) {
                     continue;
@@ -109,6 +109,8 @@ class CollectionRow extends AbstractFormBuilderRow {
             throw new FormException('Could not build ' . $name . ': no type option provided');
         }
 
+        $this->addValidation($validationFactory);
+
         if ($type !== ComponentRow::TYPE) {
             $id = $idPrefix . str_replace('[', '-', str_replace('][', '-', $name));
 
@@ -118,7 +120,7 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $this->widget = $row->getWidget();
             $this->widget->setAttribute('id', $id);
-            $this->widget->setIsMultiple(true);
+            $this->widget->setIsArray(true);
 
             return;
         }

@@ -14,12 +14,6 @@ class OptionWidget extends GenericWidget {
     protected $options = array();
 
     /**
-     * Flag to see if this widget has multi select
-     * @var boolean
-     */
-    protected $isMultiSelect = false;
-
-    /**
      * Sets the available options
      * @param array $options
      * @return null
@@ -34,23 +28,6 @@ class OptionWidget extends GenericWidget {
      */
     public function getOptions() {
         return $this->options;
-    }
-
-    /**
-     * Sets whether this widget can select multiple items
-     * @param boolean $flag
-     * @return null
-     */
-    public function setIsMultiSelect($flag) {
-        $this->isMultiSelect = $flag;
-    }
-
-    /**
-     * Gets whether this widget can select multiple items
-     * @return boolean
-     */
-    public function isMultiSelect() {
-        return $this->isMultiSelect;
     }
 
 }

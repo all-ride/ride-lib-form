@@ -110,7 +110,7 @@ abstract class AbstractRow implements Row {
      * @return null
      */
     public function __construct($name, array $options) {
-        $this->type = null;
+        $this->type = static::TYPE;
         $this->name = $name;
         $this->options = $options;
         $this->data = null;
@@ -125,7 +125,7 @@ abstract class AbstractRow implements Row {
      * @return string
      */
     public function getType() {
-        return static::TYPE;
+        return $this->type;
     }
 
     /**
@@ -353,18 +353,16 @@ abstract class AbstractRow implements Row {
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {
-        if (isset($this->widget)) {
-            $name = $this->widget->getName();
-        } else {
-            $name = $this->name;
-        }
-
         foreach ($this->filters as $filter) {
             $this->data = $filter->filter($this->data);
         }
 
-        if (isset($this->field)) {
-            $this->field->setValue($this->data);
+        if (isset($this->widget)) {
+            $this->widget->setValue($this->data);
+
+            $name = $this->widget->getName();
+        } else {
+            $name = $this->name;
         }
 
         foreach ($this->validators as $validator) {

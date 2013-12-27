@@ -83,8 +83,8 @@ class OptionRow extends AbstractRow {
             $this->widget->setOptions($options);
         }
 
-        if ($this->getOption(self::OPTION_MULTISELECT)) {
-            $this->widget->setIsArray(true);
+        if ($this->getOption(self::OPTION_MULTIPLE)) {
+            $this->widget->setIsMultiple(true);
         }
     }
 

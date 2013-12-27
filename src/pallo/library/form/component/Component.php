@@ -23,6 +23,20 @@ interface Component {
     public function getDataType();
 
     /**
+     * Parse the data to form values for the component rows
+     * @param mixed $data
+     * @return array $data
+     */
+    public function parseSetData($data);
+
+    /**
+     * Parse the form values to data of the component
+     * @param array $data
+     * @return mixed $data
+     */
+    public function parseGetData(array $data);
+
+    /**
      * Prepares the form by adding field definitions
      * @param pallo\library\form\FormBuilder $builder
      * @param array $options

@@ -67,6 +67,10 @@ class DateRow extends AbstractRow {
 
         try {
             $value = DateTime::createFromFormat($this->getFormat(), $value);
+            if ($value === false) {
+                throw new Exception();
+            }
+
             $value = $value->getTimestamp();
         } catch (Exception $e) {
             $error = new ValidationError('error.date.format', '%value% is not in the right format', array('value' => $value));

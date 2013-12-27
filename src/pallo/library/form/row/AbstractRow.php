@@ -62,6 +62,12 @@ abstract class AbstractRow implements Row {
     const OPTION_VALIDATORS = 'validators';
 
     /**
+     * Option to use an array value
+     * @var string
+     */
+    const OPTION_MULTIPLE = 'multiple';
+
+    /**
      * Name of the type
      * @var string
      */
@@ -343,6 +349,7 @@ abstract class AbstractRow implements Row {
         }
 
         $this->widget = new GenericWidget($this->type, $name, $default, $attributes);
+        $this->widget->setIsMultiple($this->getOption(self::OPTION_MULTIPLE, false));
 
         $this->addValidation($validationFactory);
     }
@@ -365,9 +372,25 @@ abstract class AbstractRow implements Row {
             $name = $this->name;
         }
 
-        foreach ($this->validators as $validator) {
-            if (!$validator->isValid($this->data)) {
-                $validationException->addErrors($name, $validator->getErrors());
+        if ($this->getOption(self::OPTION_MULTIPLE)) {
+            if (!is_array($this->data)) {
+                $data = array($this->data);
+            } else {
+                $data = $this->data;
+            }
+
+            foreach ($data as $i => $d) {
+                foreach ($this->validators as $validator) {
+                    if (!$validator->isValid($d)) {
+                        $validationException->addErrors($name . '[' . $i . ']', $validator->getErrors());
+                    }
+                }
+            }
+        } else {
+            foreach ($this->validators as $validator) {
+                if (!$validator->isValid($this->data)) {
+                    $validationException->addErrors($name, $validator->getErrors());
+                }
             }
         }
     }

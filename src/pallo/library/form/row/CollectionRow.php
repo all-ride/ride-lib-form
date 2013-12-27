@@ -120,7 +120,7 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $this->widget = $row->getWidget();
             $this->widget->setAttribute('id', $id);
-            $this->widget->setIsArray(true);
+            $this->widget->setIsMultiple(true);
 
             return;
         }

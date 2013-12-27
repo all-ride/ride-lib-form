@@ -21,16 +21,16 @@ interface Widget {
 
     /**
      * Sets whether this widget contains an array value
-     * @param boolean $isArray
+     * @param boolean $isMultiple
      * @return null
      */
-    public function setIsArray($isArray);
+    public function setIsMultiple($isMultiple);
 
     /**
      * Gets whether this widget contains an array value
      * @return boolean
      */
-    public function isArray();
+    public function isMultiple();
 
     /**
      * Sets the value for this widget

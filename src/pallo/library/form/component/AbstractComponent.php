@@ -24,4 +24,22 @@ abstract class AbstractComponent implements Component {
         return null;
     }
 
+    /**
+     * Parse the data to form values for the component rows
+     * @param mixed $data
+     * @return array $data
+     */
+    public function parseSetData($data) {
+        return $data;
+    }
+
+    /**
+     * Parse the form values to data of the component
+     * @param array $data
+     * @return mixed $data
+    */
+    public function parseGetData(array $data) {
+        return $data;
+    }
+
 }

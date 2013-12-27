@@ -4,6 +4,7 @@ namespace pallo\library\form\row;
 
 use pallo\library\form\component\Component;
 use pallo\library\form\exception\FormException;
+use pallo\library\form\widget\GenericWidget;
 use pallo\library\validation\exception\ValidationException;
 use pallo\library\validation\factory\ValidationFactory;
 
@@ -25,10 +26,10 @@ class ComponentRow extends AbstractFormBuilderRow {
     const OPTION_COMPONENT = 'component';
 
     /**
-     * Flag to see if the row has been initialized
-     * @var boolean
+     * Instance of the component
+     * @var pallo\library\form\component\Component
      */
-    protected $isInitialized = false;
+    protected $component;
 
     /**
      * Processes the request and updates the data of this row
@@ -57,8 +58,12 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function setData($data) {
+        $this->initialize();
+
+        $data = $this->component->parseSetData($data);
+
         if ($data !== null) {
-            $class = $this->getOption(self::OPTION_COMPONENT)->getDataType();
+            $class = $this->component->getDataType();
 
             if ($class) {
                 if (!is_object($data) || get_class($data) != $class) {
@@ -90,7 +95,7 @@ class ComponentRow extends AbstractFormBuilderRow {
             }
         }
 
-        return $this->data;
+        return $this->component->parseGetData($this->data);
     }
 
     /**
@@ -99,7 +104,7 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @return mixed
      */
     protected function createData(array $values) {
-        $class = $this->getOption(self::OPTION_COMPONENT)->getDataType();
+        $class = $this->component->getDataType();
 
         if ($class) {
             return $this->reflectionHelper->createData($class, $values);
@@ -118,6 +123,8 @@ class ComponentRow extends AbstractFormBuilderRow {
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
         $this->initialize();
 
+        $name = $this->getPropertyName($namePrefix);
+
         if (!$namePrefix) {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
@@ -129,6 +136,17 @@ class ComponentRow extends AbstractFormBuilderRow {
 
             $row->buildRow($namePrefix, $idPrefix, $validationFactory);
         }
+
+        if ($this->data !== null) {
+            $default = $this->data;
+        } else {
+            $default = $this->getDefault();
+        }
+
+        $attributes = $this->getOption(self::OPTION_ATTRIBUTES, array());
+        $attributes['id'] = $name;
+
+        $this->widget = new GenericWidget($this->type, $name, $default, $attributes);
     }
 
     /**
@@ -147,23 +165,21 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @throws pallo\library\form\exception\FormException
      */
     protected function initialize() {
-        if ($this->isInitialized) {
+        if ($this->component) {
             return;
         }
 
-        $component = $this->getOption(self::OPTION_COMPONENT);
-        if (!$component) {
+        $this->component = $this->getOption(self::OPTION_COMPONENT);
+        if (!$this->component) {
             throw new FormException('Could not build ' . $this->name . ': no component option provided');
-        } elseif (!$component instanceof Component) {
+        } elseif (!$this->component instanceof Component) {
             throw new FormException('Could not build ' . $this->name . ': component is not an implementation of pallo\\łibrary\\form\\component\\Component');
         }
 
         $options = $this->rowFactory->getBuildOptions();
         $options['data'] = $this->data;
 
-        $component->prepareForm($this, $options);
-
-        $this->isInitialized = true;
+        $this->component->prepareForm($this, $options);
     }
 
 }

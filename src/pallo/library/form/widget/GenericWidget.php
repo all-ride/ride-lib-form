@@ -35,7 +35,7 @@ class GenericWidget implements Widget {
      * Flag to see if this widget contains an array value
      * @var boolean
      */
-    protected $isArray;
+    protected $isMultiple;
 
     /**
      * Constructs a new widget
@@ -45,12 +45,12 @@ class GenericWidget implements Widget {
      * @param array $attributes Extra attributes
      * @return null
      */
-    public function __construct($type, $name, $value = null, array $attributes = array(), $isArray = false) {
+    public function __construct($type, $name, $value = null, array $attributes = array(), $isMultiple = false) {
         $this->type = $type;
         $this->name = $name;
         $this->value = $value;
         $this->attributes = $attributes;
-        $this->isArray = $isArray;
+        $this->isMultiple = $isMultiple;
     }
 
     /**
@@ -71,19 +71,19 @@ class GenericWidget implements Widget {
 
     /**
      * Sets whether this widget contains an array value
-     * @param boolean $isArray
+     * @param boolean $isMultiple
      * @return null
      */
-    public function setIsArray($isArray) {
-        $this->isArray = $isArray;
+    public function setIsMultiple($isMultiple) {
+        $this->isMultiple = $isMultiple;
     }
 
     /**
      * Gets whether this widget contains an array value
      * @return boolean
      */
-    public function isArray() {
-        return $this->isArray;
+    public function isMultiple() {
+        return $this->isMultiple;
     }
 
     /**

@@ -37,6 +37,13 @@ interface FormBuilder {
     public function removeRow($name);
 
     /**
+     * Checks if a row is available
+     * @param string $name Name of the row
+     * @return boolean
+     */
+    public function hasRow($name);
+
+    /**
      * Gets a row from the form
      * @param string $name Name of the row
      * @return pallo\library\html\form\row\Row

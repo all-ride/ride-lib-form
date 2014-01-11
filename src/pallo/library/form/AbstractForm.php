@@ -128,6 +128,15 @@ abstract class AbstractForm implements Form {
     }
 
     /**
+     * Checks if a row is available
+     * @param string $name Name of the row
+     * @return boolean
+     */
+    public function hasRow($name) {
+        return isset($this->rows[$name]);
+    }
+
+    /**
      * Gets a row from the form
      * @param string $name Name of the row
      * @return Row

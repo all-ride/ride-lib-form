@@ -44,11 +44,17 @@ class CollectionRow extends AbstractFormBuilderRow {
     public function processData(array $values) {
         if (!isset($values[$this->name])) {
             return;
-        } elseif (!is_array($values[$this->name])) {
+        }
+
+        $this->oldData = $this->data;
+
+        if (!is_array($values[$this->name])) {
             $this->data = array();
         } else {
             $this->data = $values[$this->name];
         }
+
+        $this->processedData = $values;
     }
 
     /**
@@ -111,21 +117,34 @@ class CollectionRow extends AbstractFormBuilderRow {
 
         $this->addValidation($validationFactory);
 
+        $options = $this->getOption(self::OPTION_OPTIONS, array());
+
         if ($type !== ComponentRow::TYPE) {
             $id = $idPrefix . str_replace('[', '-', str_replace('][', '-', $name));
 
-            $row = $this->rowFactory->createRow($type, $name, $this->options);
-            $row->setData($this->data);
-            $row->buildRow('', $idPrefix, $validationFactory);
+            $options[self::OPTION_MULTIPLE] = true;
 
-            $this->widget = $row->getWidget();
+            $this->rows[$name] = $this->rowFactory->createRow($type, $name, $options);
+            if (isset($this->processedData)) {
+                $this->rows[$name]->setData($this->oldData);
+                $this->rows[$name]->processData($this->processedData);
+
+                $this->data = $this->rows[$name]->getData();
+
+                unset($this->oldData);
+                unset($this->processedData);
+            } else {
+                $this->rows[$name]->setData($this->data);
+            }
+
+            $this->rows[$name]->buildRow('', $idPrefix, $validationFactory);
+
+            $this->widget = $this->rows[$name]->getWidget();
             $this->widget->setAttribute('id', $id);
             $this->widget->setIsMultiple(true);
 
             return;
         }
-
-        $options = $this->getOption(self::OPTION_OPTIONS, array());
 
         if ($this->data) {
             $data = $this->data;
@@ -139,8 +158,14 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $row = $this->rowFactory->createRow($type, $name, $options);
 
-            if (is_array($value)) {
+            if ($key !== self::VALUE_PROTOTYPE && isset($this->processedData)) {
+                if (isset($this->oldData[$key])) {
+                    $row->setData($this->oldData[$key]);
+                }
+
                 $row->processData($value);
+
+                $this->data[$key] = $row->getData();
             } else {
                 $row->setData($value);
             }
@@ -149,6 +174,9 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $this->rows[$key] = $row;
         }
+
+        unset($this->oldData);
+        unset($this->processedData);
     }
 
     /**

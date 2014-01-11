@@ -50,6 +50,8 @@ class ComponentRow extends AbstractFormBuilderRow {
         foreach ($this->rows as $row) {
             $row->processData($values);
         }
+
+        $this->data = $this->getData();
     }
 
     /**
@@ -75,6 +77,14 @@ class ComponentRow extends AbstractFormBuilderRow {
         }
 
         $this->data = $data;
+
+        foreach ($this->rows as $name => $row) {
+            if (isset($data[$name])) {
+                $row->setData($data[$name]);
+            } else {
+                $row->setData(null);
+            }
+        }
     }
 
     /**
@@ -166,20 +176,22 @@ class ComponentRow extends AbstractFormBuilderRow {
      */
     protected function initialize() {
         if ($this->component) {
-            return;
+            return false;
         }
 
         $this->component = $this->getOption(self::OPTION_COMPONENT);
         if (!$this->component) {
             throw new FormException('Could not build ' . $this->name . ': no component option provided');
         } elseif (!$this->component instanceof Component) {
-            throw new FormException('Could not build ' . $this->name . ': component is not an implementation of pallo\\łibrary\\form\\component\\Component');
+            throw new FormException('Could not build ' . $this->name . ': component is not an implementation of pallo\\library\\form\\component\\Component');
         }
 
         $options = $this->rowFactory->getBuildOptions();
         $options['data'] = $this->data;
 
         $this->component->prepareForm($this, $options);
+
+        return true;
     }
 
 }

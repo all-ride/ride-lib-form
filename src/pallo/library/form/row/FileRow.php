@@ -32,12 +32,6 @@ class FileRow extends AbstractRow {
     const OPTION_OVERWRITE = 'overwrite';
 
     /**
-     * Option to keep the files of the previous value
-     * @var string
-     */
-    const OPTION_KEEP_OLD = 'keep.old';
-
-    /**
      * Instance of the file system
      * @var pallo\library\system\file\FileSystem
      */
@@ -79,9 +73,8 @@ class FileRow extends AbstractRow {
 
         $oldData = $this->data;
 
-        $this->data = $values[$this->name];
-
-        if (!is_array($this->data) || !$this->data) {
+        $files = $values[$this->name];
+        if (!is_array($files) || !$files) {
             return;
         }
 
@@ -98,17 +91,38 @@ class FileRow extends AbstractRow {
         }
 
         $overwrite = $this->getOption(self::OPTION_OVERWRITE);
+        $isMultiple = $this->getOption(self::OPTION_MULTIPLE);
 
-        $files = $this->getFiles($this->data);
-
-        if (count($files) == 1) {
-            $this->data = null;
+        if (!$isMultiple) {
+            $files = array($files);
         } else {
             $this->data = array();
         }
 
         foreach ($files as $index => $file) {
-            if ($file['error'] == UPLOAD_ERR_NO_FILE) {
+            if (!isset($file['error'])) {
+                // not a file array, take data wichout processing
+                if ($isMultiple) {
+                    $this->data[$index] = $file;
+                } else {
+                    $this->data = $file;
+                }
+
+                continue;
+            } elseif ($file['error'] == UPLOAD_ERR_NO_FILE) {
+                // empty field
+                if ($isMultiple) {
+                    if (isset($oldData[$index])) {
+                        $this->data[$index] = $oldData[$index];
+
+                        unset($oldData[$index]);
+                    }
+                } else {
+                    $this->data = $oldData;
+
+                    $oldData = null;
+                }
+
                 continue;
             }
 
@@ -123,7 +137,7 @@ class FileRow extends AbstractRow {
                 $uploadFile = $uploadFile->getCopyFile();
             }
 
-            // upload file
+            // move file from temp to upload path
             if (!move_uploaded_file($file['tmp_name'], $uploadFile->getPath())) {
                 throw new FormException('Could not move the uploaded file ' . $file['tmp_name'] . ' to ' . $uploadFile->getPath());
             }
@@ -140,61 +154,12 @@ class FileRow extends AbstractRow {
             }
 
             // set to data
-            if (is_array($this->data)) {
+            if ($isMultiple) {
                 $this->data[$index] = $uploadPath;
             } else {
                 $this->data = $uploadPath;
             }
         }
-
-        if (!$oldData || $this->getOption(self::OPTION_KEEP_OLD)) {
-            return;
-        }
-
-        // remove files of the previous value
-        if (!is_array($oldData)) {
-            $oldData = array($oldData);
-        }
-
-        foreach ($oldData as $file) {
-            if (!$file) {
-                continue;
-            }
-
-            $file = $path->getChild($this->fileSystem->getFile($file)->getName());
-            if ($file->exists()) {
-                $file->delete();
-            }
-        }
-    }
-
-    /**
-     * Gets the files from the submit data
-     * @param array $data Submitted data
-     * @return array
-     */
-    protected function getFiles(array $data) {
-        $files = array();
-
-        foreach ($data as $file) {
-            if (!is_array($file)) {
-                $files[] = $data;
-
-                break;
-            } else {
-                foreach ($file['name'] as $index => $name) {
-                    $files[] = array(
-                        'name' => $file['name'][$index],
-                        'type' => $file['type'][$index],
-                        'tmp_name' => $file['tmp_name'][$index],
-                        'error' => $file['error'][$index],
-                        'size' => $file['size'][$index],
-                    );
-                }
-            }
-        }
-
-        return $files;
     }
 
     /**

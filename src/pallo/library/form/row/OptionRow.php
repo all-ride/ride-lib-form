@@ -55,7 +55,7 @@ class OptionRow extends AbstractRow {
 
             $this->data = $data;
         } elseif (!$this->getOption(self::OPTION_OPTIONS) && !$this->getOption(self::OPTION_MULTISELECT)) {
-            $this->data = false;
+            $this->data = null;
         } elseif ($this->getOption(self::OPTION_MULTISELECT)) {
             $this->data = array();
         }

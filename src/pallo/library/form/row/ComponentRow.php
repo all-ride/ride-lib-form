@@ -51,7 +51,7 @@ class ComponentRow extends AbstractFormBuilderRow {
             $row->processData($values);
         }
 
-        $this->data = $this->getData();
+        $this->getData();
     }
 
     /**
@@ -79,8 +79,8 @@ class ComponentRow extends AbstractFormBuilderRow {
         $this->data = $data;
 
         foreach ($this->rows as $name => $row) {
-            if (isset($data[$name])) {
-                $row->setData($data[$name]);
+            if ($this->data) {
+                $row->setData($this->reflectionHelper->getProperty($this->data, $name));
             } else {
                 $row->setData(null);
             }

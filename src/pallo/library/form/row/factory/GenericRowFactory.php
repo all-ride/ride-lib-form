@@ -17,6 +17,7 @@ use pallo\library\form\row\SelectRow;
 use pallo\library\form\row\StringRow;
 use pallo\library\form\row\TextRow;
 use pallo\library\form\row\WebsiteRow;
+use pallo\library\form\row\WysiwygRow;
 use pallo\library\reflection\ReflectionHelper;
 use pallo\library\system\file\FileSystem;
 
@@ -101,8 +102,11 @@ class GenericRowFactory extends AbstractRowFactory {
                 break;
             case 'binary':
             case 'text':
-            case 'wysiwyg':
                 $row = new TextRow($name, $options);
+
+                break;
+            case 'wysiwyg':
+                $row = new WysiwygRow($name, $options);
 
                 break;
             case 'file':

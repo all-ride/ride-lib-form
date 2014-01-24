@@ -11,7 +11,7 @@ class OptionWidget extends GenericWidget {
      * Option values for the widget
      * @var array
      */
-    protected $options = array();
+    protected $options = null;
 
     /**
      * Sets the available options
@@ -19,7 +19,11 @@ class OptionWidget extends GenericWidget {
      * @return null
      */
     public function setOptions(array $options) {
-        $this->options = $options;
+        if ($options) {
+            $this->options = $options;
+        } else {
+            $this->options = null;
+        }
     }
 
     /**

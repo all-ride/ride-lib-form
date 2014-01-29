@@ -48,9 +48,10 @@ class GenericWidget implements Widget {
     public function __construct($type, $name, $value = null, array $attributes = array(), $isMultiple = false) {
         $this->type = $type;
         $this->name = $name;
-        $this->value = $value;
         $this->attributes = $attributes;
-        $this->isMultiple = $isMultiple;
+
+        $this->setValue($value);
+        $this->setIsMultiple($isMultiple);
     }
 
     /**

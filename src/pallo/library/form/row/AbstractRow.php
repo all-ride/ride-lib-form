@@ -348,10 +348,21 @@ abstract class AbstractRow implements Row {
             $attributes['readonly'] = 'readonly';
         }
 
-        $this->widget = new GenericWidget($this->type, $name, $default, $attributes);
+        $this->widget = $this->createWidget($name, $default, $attributes);
         $this->widget->setIsMultiple($this->getOption(self::OPTION_MULTIPLE, false));
 
         $this->addValidation($validationFactory);
+    }
+
+    /**
+     * Creates the widget for this row
+     * @param string $name
+     * @param mixed $default
+     * @param array $attributes
+     * @return pallo\library\form\widget\Widget
+     */
+    protected function createWidget($name, $default, array $attributes) {
+        return new GenericWidget($this->type, $name, $default, $attributes);
     }
 
     /**

@@ -62,30 +62,27 @@ class OptionRow extends AbstractRow {
     }
 
     /**
-     * Performs necessairy build actions for this row
-     * @param string $namePrefix Prefix for the row name
-     * @param string $idPrefix Prefix for the field id
-     * @param pallo\library\validation\factory\ValidationFactory $validationFactory
-     * @return null
+     * Creates the widget for this row
+     * @param string $name
+     * @param mixed $default
+     * @param array $attributes
+     * @return pallo\library\form\widget\Widget
      */
-    public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
-        parent::buildRow($namePrefix, $idPrefix, $validationFactory);
-
+    protected function createWidget($name, $default, array $attributes) {
         $decorator = $this->getOption(self::OPTION_DECORATOR);
         if ($decorator) {
-            $this->widget->setValue($decorator->decorate($this->widget->getValue()));
+            $default = $decorator->decorate($default);
         }
 
-        $this->widget = new OptionWidget($this->widget->getType(), $this->widget->getName(), $this->widget->getValue(), $this->widget->getAttributes());
+        $widget = new OptionWidget($this->type, $name, $default, $attributes);
 
         $options = $this->getOption(self::OPTION_OPTIONS);
         if ($options) {
-            $this->widget->setOptions($options);
+            $widget->setOptions($options);
         }
 
-        if ($this->getOption(self::OPTION_MULTIPLE)) {
-            $this->widget->setIsMultiple(true);
-        }
+        return $widget;
     }
+
 
 }

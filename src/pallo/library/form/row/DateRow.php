@@ -2,6 +2,8 @@
 
 namespace pallo\library\form\row;
 
+use pallo\library\form\row\util\JQueryDateFormatConverter;
+use pallo\library\form\widget\DateWidget;
 use pallo\library\validation\exception\ValidationException;
 use pallo\library\validation\factory\ValidationFactory;
 use pallo\library\validation\ValidationError;
@@ -73,7 +75,7 @@ class DateRow extends AbstractRow {
 
             $value = $value->getTimestamp();
         } catch (Exception $e) {
-            $error = new ValidationError('error.date.format', '%value% is not in the right format', array('value' => $value));
+            $error = new ValidationError('error.validation.date.format', '%value% is not in the right format', array('value' => $value));
 
             $exception = new ValidationException();
             $exception->addErrors($this->getName(), array($error));
@@ -85,19 +87,20 @@ class DateRow extends AbstractRow {
     }
 
     /**
-     * Performs necessairy build actions for this row
-     * @param string $namePrefix Prefix for the row name
-     * @param string $idPrefix Prefix for the field id
-     * @param pallo\library\validation\factory\ValidationFactory $validationFactory
-     * @return null
+     * Creates the widget for this row
+     * @param string $name
+     * @param mixed $default
+     * @param array $attributes
+     * @return pallo\library\form\widget\Widget
      */
-    public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
-        parent::buildRow($namePrefix, $idPrefix, $validationFactory);
+    protected function createWidget($name, $default, array $attributes) {
+        $dateConverter = new JQueryDateFormatConverter();
+        $format = $this->getFormat();
 
-        $value = $this->widget->getValue();
-        if ($value && is_numeric($value)) {
-            $this->widget->setValue(date($this->getFormat(), $value));
-        }
+        $attributes['data-format-php'] = $format;
+        $attributes['data-format-jquery'] = $dateConverter->convertFormatFromPhp($format);
+
+        return new DateWidget($name, $default, $attributes);
     }
 
 }

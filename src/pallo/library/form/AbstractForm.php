@@ -164,7 +164,7 @@ abstract class AbstractForm implements Form {
      * data on the form could not be validated
      */
     public function validate() {
-        $this->validationException = new ValidationException();
+        $this->getValidationException();
 
         foreach ($this->rows as $name => $row) {
             $row->applyValidation($this->validationException);
@@ -277,7 +277,16 @@ abstract class AbstractForm implements Form {
             }
 
             if ($data !== null) {
-                $row->processData($data);
+                try {
+                    $row->processData($data);
+                } catch (ValidationException $exception) {
+                    $validationException = $this->getValidationException();
+
+                    $errors = $exception->getAllErrors();
+                    foreach ($errors as $fieldName => $fieldErrors) {
+                        $validationException->addErrors($fieldName, $fieldErrors);
+                    }
+                }
             }
 
             $row->buildRow($namePrefix, $idPrefix, $this->validationFactory);

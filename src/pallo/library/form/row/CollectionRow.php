@@ -42,13 +42,9 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function processData(array $values) {
-        if (!isset($values[$this->name])) {
-            return;
-        }
-
         $this->oldData = $this->data;
 
-        if (!is_array($values[$this->name])) {
+        if (!isset($values[$this->name]) || !is_array($values[$this->name])) {
             $this->data = array();
         } else {
             $this->data = $values[$this->name];

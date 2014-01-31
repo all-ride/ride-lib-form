@@ -332,7 +332,7 @@ abstract class AbstractRow implements Row {
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
         $name = $this->getPropertyName($namePrefix);
-        $id = $idPrefix . str_replace('[', '-', str_replace('][', '-', $name));
+        $id = $idPrefix . str_replace(']', '', str_replace('[', '-', str_replace('][', '-', $name)));
 
         if ($this->data !== null) {
             $default = $this->data;

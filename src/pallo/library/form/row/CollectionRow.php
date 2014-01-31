@@ -75,7 +75,6 @@ class CollectionRow extends AbstractFormBuilderRow {
 
     /**
      * Gets the data of this row
-     * @param pallo\library\http\Request
      * @return mixed
      */
     public function getData() {
@@ -149,8 +148,18 @@ class CollectionRow extends AbstractFormBuilderRow {
         }
         $data[self::VALUE_PROTOTYPE] = null;
 
+        if (isset($options[ComponentRow::OPTION_COMPONENT])) {
+            $component = $options[ComponentRow::OPTION_COMPONENT];
+        } else {
+            $component = null;
+        }
+
         foreach ($data as $key => $value) {
             $namePrefix = $name . '[' . $key . '][';
+
+            if (is_object($component)) {
+                $options['component'] = clone $component;
+            }
 
             $row = $this->rowFactory->createRow($type, $name, $options);
 

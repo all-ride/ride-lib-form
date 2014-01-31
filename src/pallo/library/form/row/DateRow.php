@@ -68,6 +68,8 @@ class DateRow extends AbstractRow {
         }
 
         try {
+            $originalValue = $value;
+
             $value = DateTime::createFromFormat($this->getFormat(), $value);
             if ($value === false) {
                 throw new Exception();
@@ -75,7 +77,7 @@ class DateRow extends AbstractRow {
 
             $value = $value->getTimestamp();
         } catch (Exception $e) {
-            $error = new ValidationError('error.validation.date.format', '%value% is not in the right format', array('value' => $value));
+            $error = new ValidationError('error.validation.date.format', '%value% is not in the right format', array('value' => $originalValue));
 
             $exception = new ValidationException();
             $exception->addErrors($this->getName(), array($error));

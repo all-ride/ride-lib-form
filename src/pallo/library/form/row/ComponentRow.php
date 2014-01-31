@@ -48,10 +48,19 @@ class ComponentRow extends AbstractFormBuilderRow {
         }
 
         foreach ($this->rows as $row) {
-            $row->processData($values);
-        }
+            try {
+                $row->processData($values);
+            } catch (ValidationException $exception) {
+                $errors = $exception->getAllErrors();
 
-        $this->getData();
+                $exception = new ValidationException();
+                foreach ($errors as $fieldName => $fieldErrors) {
+                    $exception->addErrors($this->name . '[' . $fieldName . ']', $fieldErrors);
+                }
+
+                throw $exception;
+            }
+        }
     }
 
     /**
@@ -62,19 +71,25 @@ class ComponentRow extends AbstractFormBuilderRow {
     public function setData($data) {
         $this->initialize();
 
-        $data = $this->component->parseSetData($data);
-
         if ($data !== null) {
             $class = $this->component->getDataType();
 
             if ($class) {
                 if (!is_object($data) || get_class($data) != $class) {
-                    throw new FormException('Could not set data for ' . $this->name . ': data is not an instance of ' . $class);
+                    if (is_object($data)) {
+                        $type = get_class($data);
+                    } else {
+                        $type = gettype($data);
+                    }
+
+                    throw new FormException('Could not set data for ' . $this->name . ': instance of ' . $class . ' expected, recieved ' . $type);
                 }
             } elseif (!is_array($data)) {
                 throw new FormException('Could not set data for ' . $this->name . ': data is not an array');
             }
         }
+
+        $data = $this->component->parseSetData($data);
 
         $this->data = $data;
 
@@ -97,15 +112,7 @@ class ComponentRow extends AbstractFormBuilderRow {
             $values[$name] = $row->getData();
         }
 
-        if ($this->data === null) {
-            $this->data = $this->createData($values);
-        } else {
-            foreach ($values as $name => $value) {
-                $this->reflectionHelper->setProperty($this->data, $name, $value);
-            }
-        }
-
-        return $this->component->parseGetData($this->data);
+        return $this->component->parseGetData($values);
     }
 
     /**
@@ -138,6 +145,8 @@ class ComponentRow extends AbstractFormBuilderRow {
         if (!$namePrefix) {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
+
+        $this->data = $this->getData();
 
         foreach ($this->rows as $name => $row) {
             if ($this->data !== null) {

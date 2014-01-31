@@ -84,8 +84,8 @@ class ComponentRow extends AbstractFormBuilderRow {
 
                     throw new FormException('Could not set data for ' . $this->name . ': instance of ' . $class . ' expected, recieved ' . $type);
                 }
-            } elseif (!is_array($data)) {
-                throw new FormException('Could not set data for ' . $this->name . ': data is not an array');
+//             } elseif (!is_array($data)) {
+//                 throw new FormException('Could not set data for ' . $this->name . ': data is not an array');
             }
         }
 
@@ -146,7 +146,9 @@ class ComponentRow extends AbstractFormBuilderRow {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
 
-        $this->data = $this->getData();
+        if ($this->component->getDataType()) {
+            $this->data = $this->getData();
+        }
 
         foreach ($this->rows as $name => $row) {
             if ($this->data !== null) {

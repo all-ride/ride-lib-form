@@ -26,6 +26,10 @@ class DateWidget extends GenericWidget {
      * @return null
      */
     public function setValue($value, $part = null) {
+        if (!$value) {
+            $value = null;
+        }
+
         if (is_numeric($value)) {
             $value = date($this->attributes['data-format-php'], $value);
         }

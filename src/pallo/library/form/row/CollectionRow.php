@@ -161,6 +161,8 @@ class CollectionRow extends AbstractFormBuilderRow {
                 $options['component'] = clone $component;
             }
 
+            $options[ComponentRow::OPTION_EMBED] = true;
+
             $row = $this->rowFactory->createRow($type, $name, $options);
 
             if ($key !== self::VALUE_PROTOTYPE && isset($this->processedData)) {

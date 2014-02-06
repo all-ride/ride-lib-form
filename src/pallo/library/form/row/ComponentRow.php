@@ -26,6 +26,12 @@ class ComponentRow extends AbstractFormBuilderRow {
     const OPTION_COMPONENT = 'component';
 
     /**
+     * Option to embed the component
+     * @var string
+     */
+    const OPTION_EMBED = 'embed';
+
+    /**
      * Instance of the component
      * @var pallo\library\form\component\Component
      */
@@ -39,7 +45,7 @@ class ComponentRow extends AbstractFormBuilderRow {
     public function processData(array $values) {
         $this->initialize();
 
-        if (isset($values[$this->name])) {
+        if (!$this->getOption(self::OPTION_EMBED) && isset($values[$this->name])) {
             if (is_array($values[$this->name])) {
                 $values = $values[$this->name];
             } else {
@@ -142,7 +148,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $name = $this->getPropertyName($namePrefix);
 
-        if (!$namePrefix) {
+        if (!$namePrefix || !$this->getOption(self::OPTION_EMBED)) {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
 
@@ -153,12 +159,14 @@ class ComponentRow extends AbstractFormBuilderRow {
             $data = null;
         }
 
-        foreach ($this->rows as $name => $row) {
-            if ($data !== null) {
-                $row->setData($this->reflectionHelper->getProperty($data, $name));
-            }
+        if ($this->rows) {
+            foreach ($this->rows as $rowName => $row) {
+                if ($data !== null) {
+                    $row->setData($this->reflectionHelper->getProperty($data, $rowName));
+                }
 
-            $row->buildRow($namePrefix, $idPrefix, $validationFactory);
+                $row->buildRow($namePrefix, $idPrefix, $validationFactory);
+            }
         }
 
         if ($this->data !== null) {

@@ -259,7 +259,7 @@ abstract class AbstractForm implements Form {
 
     /**
      * Build the rows
-     * @param array $data Initial data of the rows
+     * @param array $data Submitted data for the rows
      * @throws pallo\library\form\exception\FormException when no validation
      * factory set
      */

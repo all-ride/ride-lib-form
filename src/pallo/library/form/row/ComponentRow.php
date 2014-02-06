@@ -148,11 +148,14 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         if ($this->component->getDataType()) {
             $this->data = $this->getData();
+            $data = $this->component->parseSetData($this->data);
+        } else {
+            $data = null;
         }
 
         foreach ($this->rows as $name => $row) {
-            if ($this->data !== null) {
-                $row->setData($this->reflectionHelper->getProperty($this->data, $name));
+            if ($data !== null) {
+                $row->setData($this->reflectionHelper->getProperty($data, $name));
             }
 
             $row->buildRow($namePrefix, $idPrefix, $validationFactory);

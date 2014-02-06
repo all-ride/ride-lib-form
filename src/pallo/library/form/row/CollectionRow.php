@@ -82,7 +82,7 @@ class CollectionRow extends AbstractFormBuilderRow {
             return array();
         }
 
-        if (!$this->widget) {
+        if (!$this->widget && $this->rows) {
             foreach ($this->rows as $name => $row) {
                 if ($name === self::VALUE_PROTOTYPE) {
                     continue;

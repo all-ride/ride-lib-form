@@ -102,6 +102,7 @@ class GenericRowFactory extends AbstractRowFactory {
                 break;
             case 'binary':
             case 'text':
+            case 'serialize':
                 $row = new TextRow($name, $options);
 
                 break;

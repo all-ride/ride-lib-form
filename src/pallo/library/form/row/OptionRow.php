@@ -29,12 +29,6 @@ class OptionRow extends AbstractRow {
     const OPTION_OPTIONS = 'options';
 
     /**
-     * Option to set multiselect
-     * @var string
-     */
-    const OPTION_MULTISELECT = 'multiselect';
-
-    /**
      * Processes the request and updates the data of this row
      * @param array $values Submitted values
      * @return null
@@ -43,20 +37,22 @@ class OptionRow extends AbstractRow {
         if (isset($values[$this->name])) {
             $data = $values[$this->name];
 
-            if ($this->getOption(self::OPTION_MULTISELECT) && is_array($data)) {
+            if ($this->getOption(self::OPTION_MULTIPLE)) {
                 $newData = array();
 
-                foreach ($data as $key => $value) {
-                    $newData[$value] = $value;
+                if (is_array($data)) {
+                    foreach ($data as $key => $value) {
+                        $newData[$value] = $value;
+                    }
                 }
 
                 $data = $newData;
             }
 
             $this->data = $data;
-        } elseif (!$this->getOption(self::OPTION_OPTIONS) && !$this->getOption(self::OPTION_MULTISELECT)) {
+        } elseif (!$this->getOption(self::OPTION_OPTIONS) && !$this->getOption(self::OPTION_MULTIPLE)) {
             $this->data = null;
-        } elseif ($this->getOption(self::OPTION_MULTISELECT)) {
+        } elseif ($this->getOption(self::OPTION_MULTIPLE)) {
             $this->data = array();
         }
     }

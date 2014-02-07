@@ -279,7 +279,6 @@ abstract class AbstractRow implements Row {
 
     /**
      * Gets the data of this row
-     * @param pallo\library\http\Request
      * @return mixed
      */
     public function getData() {

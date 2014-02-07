@@ -38,6 +38,33 @@ class ComponentRow extends AbstractFormBuilderRow {
     protected $component;
 
     /**
+     * Flag to see if this row has been initialized
+     * @var boolean
+     */
+    protected $isInitialized;
+
+    /**
+     * Gets the component
+     * @return pallo\library\form\component\Component
+     * @throws pallo\library\form\exception\FormException when no or an invalid
+     * component is set to this row
+     */
+    public function getComponent() {
+        if ($this->component) {
+            return $this->component;
+        }
+
+        $this->component = $this->getOption(self::OPTION_COMPONENT);
+        if (!$this->component) {
+            throw new FormException('Could not build ' . $this->name . ': no component option provided');
+        } elseif (!$this->component instanceof Component) {
+            throw new FormException('Could not build ' . $this->name . ': component is not an implementation of pallo\\library\\form\\component\\Component');
+        }
+
+        return $this->component;
+    }
+
+    /**
      * Processes the request and updates the data of this row
      * @param array $values Submitted values
      * @return null
@@ -75,10 +102,10 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function setData($data) {
-        $this->initialize();
+        $component = $this->getComponent();
 
         if ($data !== null) {
-            $class = $this->component->getDataType();
+            $class = $component->getDataType();
 
             if ($class) {
                 if (!is_object($data) || get_class($data) != $class) {
@@ -90,14 +117,12 @@ class ComponentRow extends AbstractFormBuilderRow {
 
                     throw new FormException('Could not set data for ' . $this->name . ': instance of ' . $class . ' expected, recieved ' . $type);
                 }
-//             } elseif (!is_array($data)) {
-//                 throw new FormException('Could not set data for ' . $this->name . ': data is not an array');
             }
         }
 
-        $data = $this->component->parseSetData($data);
+        $this->data = $component->parseSetData($data);
 
-        $this->data = $data;
+        $this->initialize();
 
         foreach ($this->rows as $name => $row) {
             if ($this->data) {
@@ -113,6 +138,8 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @return mixed Data of this form
      */
     public function getData() {
+        $this->initialize();
+
         $values = array();
         foreach ($this->rows as $name => $row) {
             $values[$name] = $row->getData();
@@ -197,21 +224,17 @@ class ComponentRow extends AbstractFormBuilderRow {
      * @throws pallo\library\form\exception\FormException
      */
     protected function initialize() {
-        if ($this->component) {
+        if ($this->isInitialized) {
             return false;
-        }
-
-        $this->component = $this->getOption(self::OPTION_COMPONENT);
-        if (!$this->component) {
-            throw new FormException('Could not build ' . $this->name . ': no component option provided');
-        } elseif (!$this->component instanceof Component) {
-            throw new FormException('Could not build ' . $this->name . ': component is not an implementation of pallo\\library\\form\\component\\Component');
         }
 
         $options = $this->rowFactory->getBuildOptions();
         $options['data'] = $this->data;
 
-        $this->component->prepareForm($this, $options);
+        $component = $this->getComponent();
+        $component->prepareForm($this, $options);
+
+        $this->isInitialized = true;
 
         return true;
     }

@@ -10,6 +10,7 @@ use pallo\library\form\row\EmailRow;
 use pallo\library\form\row\FileRow;
 use pallo\library\form\row\HiddenRow;
 use pallo\library\form\row\ImageRow;
+use pallo\library\form\row\LabelRow;
 use pallo\library\form\row\NumberRow;
 use pallo\library\form\row\OptionRow;
 use pallo\library\form\row\PasswordRow;
@@ -132,6 +133,10 @@ class GenericRowFactory extends AbstractRowFactory {
                 break;
             case 'hidden':
                 $row = new HiddenRow($name, $options);
+
+                break;
+            case 'label':
+                $row = new LabelRow($name, $options);
 
                 break;
             default:

@@ -148,6 +148,10 @@ abstract class AbstractRow implements Row {
      * @return string
      */
     protected function getPropertyName($prefix) {
+        if ($prefix === '[') {
+            return $this->name;
+        }
+
         $property = $prefix . $this->name;
         if (substr($prefix, -1) == '[') {
             $property .= ']';

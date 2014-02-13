@@ -4,6 +4,7 @@ namespace pallo\library\form\row;
 
 use pallo\library\validation\exception\ValidationException;
 use pallo\library\validation\factory\ValidationFactory;
+use pallo\library\validation\validator\ImageValidator;
 
 /**
  * Image row
@@ -83,8 +84,18 @@ class ImageRow extends FileRow {
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
+        $found = false;
+
         $validators = $this->getOption(self::OPTION_VALIDATORS);
-        if (!isset($validators['image'])) {
+        foreach ($validators as $validatorName => $validator) {
+            if ($validatorName == 'image' || $validator instanceof ImageValidator) {
+                $found = true;
+
+                break;
+            }
+        }
+
+        if (!$found) {
             $this->validators[] = $validationFactory->createValidator('image', array('required' => false));
         }
 

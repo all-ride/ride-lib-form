@@ -53,6 +53,26 @@ class FileRow extends AbstractRow {
     }
 
     /**
+     * Processes the attributes before creating the widget
+     * @param array $attributes Attributes by reference
+     * @return null
+     */
+    protected function processAttributes(array &$attributes) {
+        $validators = $this->getOption(self::OPTION_VALIDATORS);
+        if (!$validators || $this->data) {
+            return;
+        }
+
+        foreach ($validators as $name => $validator) {
+            if ($name == 'required' || $validator instanceof RequiredValidator) {
+                $attributes['required'] = 'required';
+
+                break;
+            }
+        }
+    }
+
+    /**
      * Adds a absolute path
      * @param string $path
      * @return null

@@ -7,6 +7,7 @@ use pallo\library\validation\exception\ValidationException;
 use pallo\library\validation\factory\ValidationFactory;
 use pallo\library\validation\filter\Filter;
 use pallo\library\validation\validator\Validator;
+use pallo\library\validation\validator\RequiredValidator;
 
 /**
  * Row for a form: container of the label and the control(s)
@@ -351,10 +352,36 @@ abstract class AbstractRow implements Row {
             $attributes['readonly'] = 'readonly';
         }
 
+        $this->processAttributes($attributes);
+
         $this->widget = $this->createWidget($name, $default, $attributes);
         $this->widget->setIsMultiple($this->getOption(self::OPTION_MULTIPLE, false));
 
         $this->addValidation($validationFactory);
+    }
+
+    /**
+     * Processes the attributes before creating the widget
+     * @param array $attributes Attributes by reference
+     * @return null
+     */
+    protected function processAttributes(array &$attributes) {
+        if ($this instanceof AbstractFormBuilderRow) {
+            return;
+        }
+
+        $validators = $this->getOption(self::OPTION_VALIDATORS);
+        if (!$validators) {
+            return;
+        }
+
+        foreach ($validators as $name => $validator) {
+            if ($name == 'required' || $validator instanceof RequiredValidator) {
+                $attributes['required'] = 'required';
+
+                break;
+            }
+        }
     }
 
     /**

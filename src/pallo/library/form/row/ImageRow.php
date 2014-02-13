@@ -88,7 +88,7 @@ class ImageRow extends FileRow {
 
         $validators = $this->getOption(self::OPTION_VALIDATORS);
         foreach ($validators as $validatorName => $validator) {
-            if ($validatorName == 'image' || $validator instanceof ImageValidator) {
+            if ($validatorName === 'image' || $validator instanceof ImageValidator) {
                 $found = true;
 
                 break;

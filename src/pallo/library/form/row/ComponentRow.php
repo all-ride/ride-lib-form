@@ -179,6 +179,11 @@ class ComponentRow extends AbstractFormBuilderRow {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
 
+        if ($namePrefix == $this->getName() . '[') {
+            $namePrefix = '';
+            $idPrefix = $this->getName() . '-';
+        }
+
         if ($this->component->getDataType()) {
             $this->data = $this->getData();
             $data = $this->component->parseSetData($this->data);

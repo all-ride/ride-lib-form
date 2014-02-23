@@ -91,12 +91,14 @@ class FileRow extends AbstractRow {
             return;
         }
 
-        $oldData = $this->data;
-
         $files = $values[$this->name];
-        if (!is_array($files) || !$files) {
+        if (!is_array($files)) {
+            $this->data = $files;
+
             return;
         }
+
+        $oldData = $this->data;
 
         $path = $this->getOption(self::OPTION_PATH);
         if (!$path) {

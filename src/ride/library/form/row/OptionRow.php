@@ -3,6 +3,7 @@
 namespace ride\library\form\row;
 
 use ride\library\form\widget\OptionWidget;
+use ride\library\validation\exception\ValidationException;
 use ride\library\validation\factory\ValidationFactory;
 
 /**
@@ -70,6 +71,10 @@ class OptionRow extends AbstractRow {
             $default = $decorator->decorate($default);
         }
 
+        if (isset($attributes['required']) && $this->getOption(self::OPTION_MULTIPLE)) {
+            unset($attributes['required']);
+        }
+
         $widget = new OptionWidget($this->type, $name, $default, $attributes);
 
         $options = $this->getOption(self::OPTION_OPTIONS);
@@ -80,5 +85,29 @@ class OptionRow extends AbstractRow {
         return $widget;
     }
 
+    /**
+     * Applies the validation rules
+     * @param ride\library\validation\exception\ValidationException $validationException
+     * @return null
+     */
+    public function applyValidation(ValidationException $validationException) {
+        foreach ($this->filters as $filter) {
+            $this->data = $filter->filter($this->data);
+        }
+
+        if (isset($this->widget)) {
+            $this->widget->setValue($this->data);
+
+            $name = $this->widget->getName();
+        } else {
+            $name = $this->name;
+        }
+
+        foreach ($this->validators as $validator) {
+            if (!$validator->isValid($this->data)) {
+                $validationException->addErrors($name, $validator->getErrors());
+            }
+        }
+    }
 
 }

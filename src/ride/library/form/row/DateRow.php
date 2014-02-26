@@ -63,29 +63,43 @@ class DateRow extends AbstractRow {
             return $value;
         }
 
-        if (strpos($value, ' ') !== false) {
-            list($value, $time) = explode(' ', $value, 2);
-        }
-
         try {
             $originalValue = $value;
 
-            $value = DateTime::createFromFormat($this->getFormat(), $value);
-            if ($value === false) {
+            $result = DateTime::createFromFormat($this->getFormat(), $value);
+            if ($result === false) {
                 throw new Exception();
             }
 
-            $value = $value->getTimestamp();
+            $result = $result->getTimestamp();
         } catch (Exception $e) {
             $error = new ValidationError('error.validation.date.format', '%value% is not in the right format', array('value' => $originalValue));
 
             $exception = new ValidationException();
             $exception->addErrors($this->getName(), array($error));
 
+            $this->data = $value;
+
             throw $exception;
         }
 
-        return $value;
+        return $result;
+    }
+
+    /**
+     * Adds defined filters and validators to this row
+     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @return null
+     */
+    protected function addValidation(ValidationFactory $validationFactory) {
+        parent::addValidation($validationFactory);
+
+        $this->validators[] = $validationFactory->createValidator('minmax', array(
+            'required' => false,
+            'minimum' => 0,
+            'error.minimum' => 'error.validation.date.format',
+            'error.numeric' => 'error.validation.date.format',
+        ));
     }
 
     /**
@@ -96,8 +110,9 @@ class DateRow extends AbstractRow {
      * @return ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
-        $dateConverter = new JQueryDateFormatConverter();
         $format = $this->getFormat();
+
+        $dateConverter = new JQueryDateFormatConverter();
 
         $attributes['data-format-php'] = $format;
         $attributes['data-format-jquery'] = $dateConverter->convertFormatFromPhp($format);

@@ -2,7 +2,6 @@
 
 namespace ride\library\form\row;
 
-use ride\library\form\component\Component;
 use ride\library\form\exception\FormException;
 use ride\library\validation\exception\ValidationException;
 use ride\library\validation\factory\ValidationFactory;
@@ -35,6 +34,12 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @var string
      */
     const VALUE_PROTOTYPE = '%prototype%';
+
+    /**
+     * Validation errors occured during build
+     * @var array
+     */
+    protected $validationErrors;
 
     /**
      * Processes the request and updates the data of this row
@@ -154,6 +159,8 @@ class CollectionRow extends AbstractFormBuilderRow {
             $component = null;
         }
 
+        $this->validationErrors = array();
+
         foreach ($data as $key => $value) {
             $namePrefix = $name . '[' . $key . '][';
 
@@ -170,7 +177,15 @@ class CollectionRow extends AbstractFormBuilderRow {
                     $row->setData($this->oldData[$key]);
                 }
 
-                $row->processData($value);
+                try {
+                    $row->processData($value);
+                } catch (ValidationException $exception) {
+                    $errors = $exception->getAllErrors();
+                    foreach ($errors as $fieldName => $fieldErrors) {
+                        $this->validationsErrors[$fieldName][] = $fieldErrors;
+                    }
+                }
+
 
                 $this->data[$key] = $row->getData();
             } else {
@@ -192,20 +207,54 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {
+        // apply validation on inner rows
         $type = $this->getOption(self::OPTION_TYPE);
-
         if ($type !== ComponentRow::TYPE) {
             parent::applyValidation($validationException);
+        } else {
+            foreach ($this->rows as $key => $row) {
+                if ($key === self::VALUE_PROTOTYPE) {
+                    continue;
+                }
 
+                $row->applyValidation($validationException);
+            }
+        }
+
+        // update the data
+        $this->data = $this->getData();
+
+        // apply validation on collection
+        foreach ($this->filters as $filter) {
+            $this->data = $filter->filter($this->data);
+        }
+
+        if (isset($this->widget)) {
+            $this->widget->setValue($this->data);
+
+            $name = $this->widget->getName();
+        } else {
+            $name = $this->name;
+        }
+
+        if (!is_array($this->data)) {
+            $this->data = (array) $this->data;
+        }
+
+        foreach ($this->validators as $validator) {
+            if (!$validator->isValid($this->data)) {
+                $validationException->addErrors($name, $validator->getErrors());
+            }
+        }
+
+        if (!$this->validationErrors) {
             return;
         }
 
-        foreach ($this->rows as $key => $row) {
-            if ($key === self::VALUE_PROTOTYPE) {
-                continue;
+        foreach ($this->validationErrors as $fieldName => $fieldErrorContainers) {
+            foreach ($fieldErrorContainers as $fieldErrors) {
+                $validationException->addErrors($fieldName, $fieldErrors);
             }
-
-            $row->applyValidation($validationException);
         }
     }
 

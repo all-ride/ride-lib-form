@@ -38,7 +38,7 @@ interface Component {
 
     /**
      * Prepares the form by adding field definitions
-     * @param ride\library\form\FormBuilder $builder
+     * @param \ride\library\form\FormBuilder $builder
      * @param array $options
      * @return null
      */

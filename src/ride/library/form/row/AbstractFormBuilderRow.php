@@ -19,7 +19,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
 
     /**
      * Sets an instance of the reflection helper
-     * @param ride\library\reflection\ReflectionHelper $reflectionHelper
+     * @param \ride\library\reflection\ReflectionHelper $reflectionHelper
      * @return null
      */
     public function setReflectionHelper(ReflectionHelper $reflectionHelper = null) {
@@ -28,7 +28,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
 
     /**
      * Sets the row factory to this row
-     * @param ride\library\form\row\factory\RowFactory $rowFactory
+     * @param \ride\library\form\row\factory\RowFactory $rowFactory
      * @return null
      */
     public function setRowFactory(RowFactory $rowFactory = null) {
@@ -104,7 +104,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
 
     /**
      * Gets the rows
-     * @return \ride\library\html\form\builder\Row
+     * @return \ride\library\form\Row
      */
     public function getRows() {
         return $this->rows;

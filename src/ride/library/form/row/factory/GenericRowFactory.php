@@ -29,19 +29,19 @@ class GenericRowFactory extends AbstractRowFactory {
 
     /**
      * Instance of the reflection helper
-     * @var ride\library\reflection\ReflectionHelper
+     * @var \ride\library\reflection\ReflectionHelper
      */
     protected $reflectionHelper;
 
     /**
      * Instance of the file system
-     * @var ride\library\system\file\FileSystem
+     * @var \ride\library\system\file\FileSystem
      */
     protected $fileSystem;
 
     /**
      * Sets an instance of the reflection helper
-     * @param ride\library\reflection\ReflectionHelper $reflectionHelper
+     * @param \ride\library\reflection\ReflectionHelper $reflectionHelper
      * @return null
      */
     public function setReflectionHelper(ReflectionHelper $reflectionHelper) {
@@ -50,7 +50,7 @@ class GenericRowFactory extends AbstractRowFactory {
 
     /**
      * Sets the instance of the file system
-     * @param ride\library\system\file\FileSystem $fileSystem
+     * @param \ride\library\system\file\FileSystem $fileSystem
      * @return null
     */
     public function setFileSystem(FileSystem $fileSystem) {
@@ -62,7 +62,7 @@ class GenericRowFactory extends AbstractRowFactory {
      * @param string $type Name of the row type
      * @param string $name Name of the row
      * @param array $options Extra options for the row
-     * @return ride\library\form\row\Row
+     * @return \ride\library\form\row\Row
      */
     public function createRow($type, $name, $options) {
         switch ($type) {

@@ -61,8 +61,8 @@ abstract class AbstractView implements View {
     /**
      * Gets a row from the form
      * @param string $name Name of the row
-     * @return ride\library\form\row\Row
-     * @throws ride\library\form\exception\FormException
+     * @return \ride\library\form\row\Row
+     * @throws \ride\library\form\exception\FormException
      */
     public function getRow($name) {
         if (!isset($this->rows[$name])) {

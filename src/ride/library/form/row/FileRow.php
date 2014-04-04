@@ -74,10 +74,14 @@ class FileRow extends AbstractRow {
 
     /**
      * Adds a absolute path
-     * @param string $path
+     * @param string|\ride\library\system\file\File $path
      * @return null
      */
     public function addAbsolutePath($path) {
+        if ($path instanceof File) {
+            $path = $path->getAbsolutePath();
+        }
+
         $this->absolutePaths[$path] = true;
     }
 

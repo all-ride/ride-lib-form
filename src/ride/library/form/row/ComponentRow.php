@@ -33,7 +33,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
     /**
      * Instance of the component
-     * @var ride\library\form\component\Component
+     * @var \ride\library\form\component\Component
      */
     protected $component;
 

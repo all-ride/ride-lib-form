@@ -2,6 +2,8 @@
 
 namespace ride\library\form\row\factory;
 
+use ride\library\system\file\File;
+
 /**
  * Factory to create row types
  */
@@ -38,10 +40,14 @@ abstract class AbstractRowFactory implements RowFactory {
 
     /**
      * Adds a absolute path to make file uploads relative
-     * @param string $path
+     * @param string|\ride\library\system\file\File $path
      * @return null
      */
     public function addAbsolutePath($path) {
+        if ($path instanceof File) {
+            $path = $path->getAbsolutePath();
+        }
+
         $this->absolutePaths[$path] = true;
     }
 

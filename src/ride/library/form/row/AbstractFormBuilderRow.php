@@ -7,14 +7,33 @@ use ride\library\form\row\factory\RowFactory;
 use ride\library\form\FormBuilder;
 use ride\library\reflection\ReflectionHelper;
 
-abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder {
+/**
+ * Abstract implementation for a form row with form builder support
+ */
+abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder, HtmlRow {
 
+    /**
+     * Instance of the reflection helper
+     * @var \ride\library\reflection\ReflectionHelper
+     */
     protected $reflectionHelper;
 
+    /**
+     * Instance of the row factory
+     * @var \ride\library\form\row\factory\RowFactory
+     */
     protected $rowFactory;
 
+    /**
+     * Subrows of this rows
+     * @var array
+     */
     protected $rows;
 
+    /**
+     * Flag to see if the this row has been prepared for usage
+     * @var boolean
+     */
     protected $isPrepared = false;
 
     /**
@@ -138,6 +157,72 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
             $row->setReflectionHelper(null);
             $row->setRowFactory(null);
         }
+    }
+
+    /**
+     * Gets all the javascript files which are needed for this row
+     * @return array|null
+     */
+    public function getJavascripts() {
+        if (!$this->rows) {
+            return;
+        }
+
+        $javascripts = array();
+
+        foreach ($this->rows as $name => $row) {
+            if (!$row instanceof HtmlRow) {
+                continue;
+            }
+
+            $javascripts += $row->getJavascripts();
+        }
+        return $javascripts;
+
+    }
+
+    /**
+     * Gets all the inline javascripts which are needed for this row
+     * @return array|null
+    */
+    public function getInlineJavascripts() {
+        if (!$this->rows) {
+            return;
+        }
+
+        $inlineJavascripts = array();
+
+        foreach ($this->rows as $name => $row) {
+            if (!$row instanceof HtmlRow) {
+                continue;
+            }
+
+            $inlineJavascripts += $row->getInlineJavascripts();
+        }
+
+        return $inlineJavascripts;
+    }
+
+    /**
+     * Gets all the stylesheets which are needed for this row
+     * @return array|null
+     */
+    public function getStyles() {
+        if (!$this->rows) {
+            return;
+        }
+
+        $styles = array();
+
+        foreach ($this->rows as $name => $row) {
+            if (!$row instanceof HtmlRow) {
+                continue;
+            }
+
+            $styles += $row->getStyles();
+        }
+
+        return $styles;
     }
 
 }

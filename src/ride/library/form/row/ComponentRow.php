@@ -33,7 +33,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
     /**
      * Instance of the component
-     * @var ride\library\form\component\Component
+     * @var \ride\library\form\component\Component
      */
     protected $component;
 
@@ -45,8 +45,8 @@ class ComponentRow extends AbstractFormBuilderRow {
 
     /**
      * Gets the component
-     * @return ride\library\form\component\Component
-     * @throws ride\library\form\exception\FormException when no or an invalid
+     * @return \ride\library\form\component\Component
+     * @throws \ride\library\form\exception\FormException when no or an invalid
      * component is set to this row
      */
     public function getComponent() {
@@ -167,7 +167,7 @@ class ComponentRow extends AbstractFormBuilderRow {
      * Performs necessairy build actions for this row
      * @param string $namePrefix Prefix for the row name
      * @param string $idPrefix Prefix for the field id
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
@@ -215,7 +215,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
     /**
      * Applies the validation rules
-     * @param ride\library\validation\exception\ValidationException $validationException
+     * @param \ride\library\validation\exception\ValidationException $validationException
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {
@@ -226,7 +226,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
     /**
      * Initializes the row by nesting the form build process
-     * @throws ride\library\form\exception\FormException
+     * @throws \ride\library\form\exception\FormException
      */
     protected function initialize() {
         if ($this->isInitialized) {

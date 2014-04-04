@@ -15,13 +15,13 @@ abstract class AbstractComponentForm extends AbstractForm {
 
     /**
      * Component which defines this form
-     * @var ride\library\form\component\Component
+     * @var \ride\library\form\component\Component
      */
     protected $component;
 
     /**
      * Component row for handling the component
-     * @var ride\library\form\row\ComponentRow
+     * @var \ride\library\form\row\ComponentRow
      */
     protected $componentRow;
 
@@ -44,7 +44,7 @@ abstract class AbstractComponentForm extends AbstractForm {
 
     /**
      * Sets a form component to define this form
-     * @param ride\library\form\component\Component $component
+     * @param \ride\library\form\component\Component $component
      * @return null
      */
     public function setComponent(Component $component) {
@@ -91,7 +91,7 @@ abstract class AbstractComponentForm extends AbstractForm {
 
     /**
      * Prepares for the build task
-     * @return ride\library\form\Form
+     * @return \ride\library\form\Form
      */
     public function build() {
         $this->options['data'] = $this->data;
@@ -102,7 +102,7 @@ abstract class AbstractComponentForm extends AbstractForm {
     /**
      * Build the rows
      * @param array $data Submitted data for the rows
-     * @throws ride\library\form\exception\FormException when no validation
+     * @throws \ride\library\form\exception\FormException when no validation
      * factory set
      */
     protected function buildRows(array $data = null) {

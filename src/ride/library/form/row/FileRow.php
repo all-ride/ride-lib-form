@@ -33,7 +33,7 @@ class FileRow extends AbstractRow {
 
     /**
      * Instance of the file system
-     * @var ride\library\system\file\FileSystem
+     * @var \ride\library\system\file\FileSystem
      */
     protected $fileSystem;
 
@@ -45,7 +45,7 @@ class FileRow extends AbstractRow {
 
     /**
      * Sets the instance of the file system
-     * @param ride\library\system\file\FileSystem $fileSystem
+     * @param \ride\library\system\file\FileSystem $fileSystem
      * @return null
      */
     public function setFileSystem(FileSystem $fileSystem) {
@@ -74,10 +74,14 @@ class FileRow extends AbstractRow {
 
     /**
      * Adds a absolute path
-     * @param string $path
+     * @param string|\ride\library\system\file\File $path
      * @return null
      */
     public function addAbsolutePath($path) {
+        if ($path instanceof File) {
+            $path = $path->getAbsolutePath();
+        }
+
         $this->absolutePaths[$path] = true;
     }
 
@@ -187,7 +191,7 @@ class FileRow extends AbstractRow {
     /**
      * Checks whether a file upload error occured
      * @return null
-     * @throws ride\library\form\exception\FormException when an upload error
+     * @throws \ride\library\form\exception\FormException when an upload error
      * occured
      */
     protected function isUploadError($file) {
@@ -228,7 +232,7 @@ class FileRow extends AbstractRow {
      * Performs necessairy build actions for this row
      * @param string $namePrefix Prefix for the row name
      * @param string $idPrefix Prefix for the field id
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {

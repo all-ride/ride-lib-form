@@ -88,7 +88,7 @@ abstract class AbstractRow implements Row {
 
     /**
      * Widget for this row
-     * @var ride\library\form\widget\Widget
+     * @var \ride\library\form\widget\Widget
      */
     protected $widget;
 
@@ -235,7 +235,7 @@ abstract class AbstractRow implements Row {
 
     /**
      * Gets the widget for this row
-     * @return ride\library\form\widget\Widget|null
+     * @return \ride\library\form\widget\Widget|null
      */
     public function getWidget() {
         return $this->widget;
@@ -292,7 +292,7 @@ abstract class AbstractRow implements Row {
 
     /**
      * Adds defined filters and validators to this row
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     protected function addValidation(ValidationFactory $validationFactory) {
@@ -331,7 +331,7 @@ abstract class AbstractRow implements Row {
      * Performs necessairy build actions for this row
      * @param string $namePrefix Prefix for the row name
      * @param string $idPrefix Prefix for the field id
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
@@ -389,7 +389,7 @@ abstract class AbstractRow implements Row {
      * @param string $name
      * @param mixed $default
      * @param array $attributes
-     * @return ride\library\form\widget\Widget
+     * @return \ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
         return new GenericWidget($this->type, $name, $default, $attributes);
@@ -397,7 +397,7 @@ abstract class AbstractRow implements Row {
 
     /**
      * Applies the validation rules
-     * @param ride\library\validation\exception\ValidationException $validationException
+     * @param \ride\library\validation\exception\ValidationException $validationException
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {
@@ -444,4 +444,8 @@ abstract class AbstractRow implements Row {
 
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 64dad3f4c0fdb464c1593a81bf4aee9aface7e77

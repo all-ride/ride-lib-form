@@ -2,7 +2,6 @@
 
 namespace ride\library\form\row;
 
-use ride\library\validation\factory\ValidationFactory;
 
 /**
  * Select row

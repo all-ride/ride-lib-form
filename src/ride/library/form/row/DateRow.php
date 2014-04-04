@@ -56,7 +56,7 @@ class DateRow extends AbstractRow {
     /**
      * Parses a formatted date into a timestamp
      * @param string $value
-     * @throws ride\library\form\row\ValidationException
+     * @throws \ride\library\form\row\ValidationException
      */
     protected function parseValue($value) {
         if (!$value || is_numeric($value)) {
@@ -88,7 +88,7 @@ class DateRow extends AbstractRow {
 
     /**
      * Adds defined filters and validators to this row
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     protected function addValidation(ValidationFactory $validationFactory) {
@@ -107,7 +107,7 @@ class DateRow extends AbstractRow {
      * @param string $name
      * @param mixed $default
      * @param array $attributes
-     * @return ride\library\form\widget\Widget
+     * @return \ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
         $format = $this->getFormat();

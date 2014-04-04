@@ -70,7 +70,7 @@ interface Row {
 
     /**
      * Gets the widget for this row, if applicable
-     * @return ride\library\form\widget\Widget
+     * @return \ride\library\form\widget\Widget
      */
     public function getWidget();
 
@@ -111,14 +111,14 @@ interface Row {
      * Performs necessairy build actions for this row
      * @param string $namePrefix Prefix for the row name
      * @param string $idPrefix Prefix for the field id
-     * @param ride\library\validation\factory\ValidationFactory $validationFactory
+     * @param \ride\library\validation\factory\ValidationFactory $validationFactory
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory);
 
     /**
      * Applies the validation rules
-     * @param ride\library\validation\exception\ValidationException $validationException
+     * @param \ride\library\validation\exception\ValidationException $validationException
      * @return null
      */
     public function applyValidation(ValidationException $validationException);

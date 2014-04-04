@@ -4,7 +4,6 @@ namespace ride\library\form\row;
 
 use ride\library\form\widget\OptionWidget;
 use ride\library\validation\exception\ValidationException;
-use ride\library\validation\factory\ValidationFactory;
 
 /**
  * Option row
@@ -63,7 +62,7 @@ class OptionRow extends AbstractRow {
      * @param string $name
      * @param mixed $default
      * @param array $attributes
-     * @return ride\library\form\widget\Widget
+     * @return \ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
         $decorator = $this->getOption(self::OPTION_DECORATOR);
@@ -87,7 +86,7 @@ class OptionRow extends AbstractRow {
 
     /**
      * Applies the validation rules
-     * @param ride\library\validation\exception\ValidationException $validationException
+     * @param \ride\library\validation\exception\ValidationException $validationException
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {

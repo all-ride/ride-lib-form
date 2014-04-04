@@ -29,7 +29,7 @@ interface View {
     /**
      * Gets a row from the form
      * @param string $name Name of the row
-     * @return ride\library\html\form\row\Row
+     * @return \ride\library\form\row\Row
      */
     public function getRow($name);
 

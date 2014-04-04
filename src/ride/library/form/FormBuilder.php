@@ -46,7 +46,7 @@ interface FormBuilder {
     /**
      * Gets a row from the form
      * @param string $name Name of the row
-     * @return ride\library\html\form\row\Row
+     * @return \ride\library\form\row\Row
      */
     public function getRow($name);
 
@@ -58,7 +58,7 @@ interface FormBuilder {
 
     /**
      * Performs the build tasks
-     * @return ride\library\form\Form
+     * @return \ride\library\form\Form
      */
     public function build();
 

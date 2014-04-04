@@ -148,13 +148,13 @@ class ImageValidator extends AbstractValidator {
 
     /**
      * Instance of the file browser
-     * @var ride\library\system\file\browser\FileBrowser
+     * @var \ride\library\system\file\browser\FileBrowser
      */
     protected $fileBrowser;
 
     /**
      * Instance of the image factory
-     * @var ride\library\image\io\ImageFactory
+     * @var \ride\library\image\io\ImageFactory
      */
     protected $imageFactory;
 
@@ -224,7 +224,7 @@ class ImageValidator extends AbstractValidator {
 
     /**
      * Sets the instance of file browser
-     * @param ride\library\system\file\browser\FileBrowser $fileBrowser
+     * @param \ride\library\system\file\browser\FileBrowser $fileBrowser
      * @return null
      */
     public function setFileBrowser(FileBrowser $fileBrowser) {
@@ -233,7 +233,7 @@ class ImageValidator extends AbstractValidator {
 
     /**
      * Sets the image factory to this validator
-     * @param ride\library\image\ImageFactory $imageFactory
+     * @param \ride\library\image\ImageFactory $imageFactory
      * @return null
      */
     public function setImageFactory(ImageFactory $imageFactory) {

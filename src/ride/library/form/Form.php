@@ -24,14 +24,14 @@ interface Form extends FormBuilder {
 
     /**
      * Sets the validation exception
-     * @param ride\library\validation\exception\ValidationException $exception
+     * @param \ride\library\validation\exception\ValidationException $exception
      * @return null
      */
     public function setValidationException(ValidationException $exception);
 
     /**
      * Gets the validation exception of the last validate call
-     * @return ride\library\validation\exception\ValidationException|null
+     * @return \ride\library\validation\exception\ValidationException|null
      */
     public function getValidationException();
 
@@ -43,7 +43,7 @@ interface Form extends FormBuilder {
 
     /**
      * Gets a viewable and serializable version of this form
-     * @return ride\library\form\view\View
+     * @return \ride\library\form\view\View
      */
     public function getView();
 

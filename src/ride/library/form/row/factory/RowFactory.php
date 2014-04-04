@@ -25,7 +25,7 @@ interface RowFactory {
      * @param string $type Name of the row type
      * @param string $name Name of the row
      * @param array $options Extra options for the row
-     * @return ride\library\form\row\Row
+     * @return \ride\library\form\row\Row
      */
     public function createRow($type, $name, $options);
 

@@ -444,8 +444,4 @@ abstract class AbstractRow implements Row {
 
     }
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 64dad3f4c0fdb464c1593a81bf4aee9aface7e77

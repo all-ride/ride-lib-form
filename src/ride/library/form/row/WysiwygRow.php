@@ -28,6 +28,12 @@ class WysiwygRow extends TextRow implements HtmlRow {
     protected $locale;
 
     /**
+     * Properties for the wysiwyg implementation
+     * @var array
+     */
+    protected $properties = array();
+
+    /**
      * Sets the base URL
      * @param string $baseUrl Base URL of the request
      * @return null
@@ -43,6 +49,15 @@ class WysiwygRow extends TextRow implements HtmlRow {
      */
     public function setLocale($locale) {
         $this->locale = (string) $locale;
+    }
+
+    /**
+     * Sets the properties for the wysiwyg implementation
+     * @param array $properties Key-value configuration pairs
+     * @return null
+     */
+    public function setProperties(array $properties) {
+        $this->properties = $properties;
     }
 
     /**

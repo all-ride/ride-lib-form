@@ -3,6 +3,7 @@
 namespace ride\library\form\row\factory;
 
 use ride\library\form\exception\FormException;
+use ride\library\form\row\ButtonRow;
 use ride\library\form\row\CollectionRow;
 use ride\library\form\row\ComponentRow;
 use ride\library\form\row\DateRow;
@@ -137,6 +138,10 @@ class GenericRowFactory extends AbstractRowFactory {
                 break;
             case 'label':
                 $row = new LabelRow($name, $options);
+
+                break;
+            case 'button':
+                $row = new ButtonRow($name, $options);
 
                 break;
             default:

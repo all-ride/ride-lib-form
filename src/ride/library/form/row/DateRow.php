@@ -94,10 +94,8 @@ class DateRow extends AbstractRow {
     protected function addValidation(ValidationFactory $validationFactory) {
         parent::addValidation($validationFactory);
 
-        $this->validators[] = $validationFactory->createValidator('minmax', array(
+        $this->validators[] = $validationFactory->createValidator('numeric', array(
             'required' => false,
-            'minimum' => 0,
-            'error.minimum' => 'error.validation.date.format',
             'error.numeric' => 'error.validation.date.format',
         ));
     }

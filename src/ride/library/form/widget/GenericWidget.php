@@ -124,8 +124,12 @@ class GenericWidget implements Widget {
      * @param mixed $value Value of the attribute
      * @return null
      */
-    public function setAttribute($key, $value) {
-        $this->attributes[$key] = $value;
+    public function setAttribute($key, $value = null) {
+        if ($value !== null) {
+            $this->attributes[$key] = $value;
+        } elseif (isset($this->attributes[$key])) {
+            unset($this->attributes[$key]);
+        }
     }
 
     /**

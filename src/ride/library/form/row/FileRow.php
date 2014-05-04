@@ -6,7 +6,7 @@ use ride\library\form\exception\FormException;
 use ride\library\validation\factory\ValidationFactory;
 use ride\library\system\file\FileSystem;
 use ride\library\system\file\File;
-use ride\library\String;
+use ride\library\StringHelper;
 
 /**
  * File row
@@ -155,8 +155,7 @@ class FileRow extends AbstractRow {
             $this->isUploadError($file);
 
             // prepare file name
-            $uploadFileName = new String($file['name']);
-            $uploadFileName = $uploadFileName->safeString('_', false);
+            $uploadFileName = StringHelper::safeString($file['name'], '_', false);
 
             $uploadFile = $path->getChild($uploadFileName);
             if (!$overwrite) {

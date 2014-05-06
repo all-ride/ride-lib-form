@@ -146,8 +146,11 @@ class CollectionRow extends AbstractFormBuilderRow {
             return;
         }
 
+        $default = $this->getDefault();
         if ($this->data) {
             $data = $this->data;
+        } elseif ($default) {
+            $data = $default;
         } else {
             $data = array();
         }

@@ -38,6 +38,12 @@ class FileRow extends AbstractRow {
     protected $fileSystem;
 
     /**
+     * Default upload path
+     * @var string|\ride\library\system\file\File
+     */
+    protected $defaultUploadPath;
+
+    /**
      * Absolute paths which should be made relative
      * @var array
      */
@@ -50,6 +56,15 @@ class FileRow extends AbstractRow {
      */
     public function setFileSystem(FileSystem $fileSystem) {
         $this->fileSystem = $fileSystem;
+    }
+
+    /**
+     * Sets the default upload path
+     * @param string $defaultUploadPath
+     * @return null
+     */
+    public function setDefaultUploadPath($defaultUploadPath) {
+        $this->defaultUploadPath = $defaultUploadPath;
     }
 
     /**
@@ -104,7 +119,7 @@ class FileRow extends AbstractRow {
 
         $oldData = $this->data;
 
-        $path = $this->getOption(self::OPTION_PATH);
+        $path = $this->getOption(self::OPTION_PATH, $this->defaultUploadPath);
         if (!$path) {
             throw new FormException('Could not process ' . $this->name . ': no upload path provided, use the "' . self::OPTION_PATH . '" option.');
         } elseif (!$path instanceof File) {
@@ -235,7 +250,7 @@ class FileRow extends AbstractRow {
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
-        $path = $this->getOption(self::OPTION_PATH);
+        $path = $this->getOption(self::OPTION_PATH, $this->defaultUploadPath);
         if (!$path) {
             throw new FormException('Could not build ' . $this->name . ': no upload path provided, use the "' . self::OPTION_PATH . '" option.');
         }

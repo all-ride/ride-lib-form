@@ -13,6 +13,7 @@ use ride\library\form\row\HiddenRow;
 use ride\library\form\row\ImageRow;
 use ride\library\form\row\LabelRow;
 use ride\library\form\row\NumberRow;
+use ride\library\form\row\ObjectRow;
 use ride\library\form\row\OptionRow;
 use ride\library\form\row\PasswordRow;
 use ride\library\form\row\SelectRow;
@@ -86,6 +87,10 @@ class GenericRowFactory extends AbstractRowFactory {
                 break;
             case 'select':
                 $row = new SelectRow($name, $options);
+
+                break;
+            case 'object':
+                $row = new ObjectRow($name, $options);
 
                 break;
             case 'date':

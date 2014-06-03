@@ -17,12 +17,6 @@ class OptionRow extends AbstractRow {
     const TYPE = 'option';
 
     /**
-     * Option for the value decorator
-     * @var string
-     */
-    const OPTION_DECORATOR = 'decorator';
-
-    /**
      * Option for the select options
      * @var string
      */
@@ -34,10 +28,13 @@ class OptionRow extends AbstractRow {
      * @return null
      */
     public function processData(array $values) {
+        $options = $this->getOption(self::OPTION_OPTIONS);
+        $isMultiple = $this->getOption(self::OPTION_MULTIPLE);
+
         if (isset($values[$this->name])) {
             $data = $values[$this->name];
 
-            if ($this->getOption(self::OPTION_MULTIPLE)) {
+            if ($isMultiple) {
                 $newData = array();
 
                 if (is_array($data)) {
@@ -50,9 +47,9 @@ class OptionRow extends AbstractRow {
             }
 
             $this->data = $data;
-        } elseif (!$this->getOption(self::OPTION_OPTIONS) && !$this->getOption(self::OPTION_MULTIPLE)) {
+        } elseif (!$options && !$isMultiple) {
             $this->data = null;
-        } elseif ($this->getOption(self::OPTION_MULTIPLE)) {
+        } elseif ($isMultiple) {
             $this->data = array();
         }
     }
@@ -65,11 +62,6 @@ class OptionRow extends AbstractRow {
      * @return \ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
-        $decorator = $this->getOption(self::OPTION_DECORATOR);
-        if ($decorator) {
-            $default = $decorator->decorate($default);
-        }
-
         if (isset($attributes['required']) && $this->getOption(self::OPTION_MULTIPLE)) {
             unset($attributes['required']);
         }

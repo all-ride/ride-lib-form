@@ -189,7 +189,6 @@ class CollectionRow extends AbstractFormBuilderRow {
                     }
                 }
 
-
                 $this->data[$key] = $row->getData();
             } else {
                 $row->setData($value);

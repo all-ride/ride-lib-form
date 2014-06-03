@@ -80,7 +80,8 @@ class ComponentRow extends AbstractFormBuilderRow {
             }
         }
 
-        foreach ($this->rows as $row) {
+        $this->data = array();
+        foreach ($this->rows as $rowName => $row) {
             try {
                 $row->processData($values);
             } catch (ValidationException $exception) {
@@ -93,6 +94,8 @@ class ComponentRow extends AbstractFormBuilderRow {
 
                 throw $exception;
             }
+
+            $this->data[$rowName] = $row->getData();
         }
     }
 
@@ -108,7 +111,7 @@ class ComponentRow extends AbstractFormBuilderRow {
             $class = $component->getDataType();
 
             if ($class) {
-                if (!is_object($data) || get_class($data) != $class) {
+                if (!is_object($data) || (get_class($data) != $class && !is_subclass_of($data, $class))) {
                     if (is_object($data)) {
                         $type = get_class($data);
                     } else {
@@ -120,13 +123,15 @@ class ComponentRow extends AbstractFormBuilderRow {
             }
         }
 
-        $this->data = $component->parseSetData($data);
+        $this->data = $data;
 
         $this->initialize();
 
-        foreach ($this->rows as $name => $row) {
+        $this->data = $component->parseSetData($this->data);
+
+        foreach ($this->rows as $rowName => $row) {
             if ($this->data) {
-                $row->setData($this->reflectionHelper->getProperty($this->data, $name));
+                $row->setData($this->reflectionHelper->getProperty($this->data, $rowName));
             } else {
                 $row->setData(null);
             }
@@ -184,33 +189,20 @@ class ComponentRow extends AbstractFormBuilderRow {
             $idPrefix = $this->getName() . '-';
         }
 
-        if ($this->component->getDataType()) {
-            $this->data = $this->getData();
-            $data = $this->component->parseSetData($this->data);
-        } else {
-            $data = null;
-        }
-
         if ($this->rows) {
             foreach ($this->rows as $rowName => $row) {
-                if ($data !== null) {
-                    $row->setData($this->reflectionHelper->getProperty($data, $rowName));
+                if ($this->data !== null) {
+                    $row->setData($this->reflectionHelper->getProperty($this->data, $rowName));
                 }
 
                 $row->buildRow($namePrefix, $idPrefix, $validationFactory);
             }
         }
 
-        if ($this->data !== null) {
-            $default = $this->data;
-        } else {
-            $default = $this->getDefault();
-        }
-
         $attributes = $this->getOption(self::OPTION_ATTRIBUTES, array());
         $attributes['id'] = $name;
 
-        $this->widget = new GenericWidget($this->type, $name, $default, $attributes);
+        $this->widget = new GenericWidget($this->type, $name, null, $attributes);
     }
 
     /**

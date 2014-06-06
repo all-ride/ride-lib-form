@@ -110,8 +110,18 @@ class ObjectRow extends OptionRow {
         $propertyValue = $this->getOption(self::OPTION_VALUE);
         $propertyLabel = $this->getOption(self::OPTION_PROPERTY);
 
+        if ($default && $this->getOption(self::OPTION_MULTIPLE) && !is_array($default)) {
+            $default = array($default);
+        }
+
         if ($default && $propertyValue) {
-            $default = $reflectionHelper->getProperty($default, $propertyValue);
+            if (is_array($default)) {
+                foreach ($default as $defaultIndex => $defaultValue) {
+                    $default[$defaultIndex] = $reflectionHelper->getProperty($defaultValue, $propertyValue);
+                }
+            } else {
+                $default = $reflectionHelper->getProperty($default, $propertyValue);
+            }
         }
 
         if (isset($attributes['required']) && $this->getOption(self::OPTION_MULTIPLE)) {

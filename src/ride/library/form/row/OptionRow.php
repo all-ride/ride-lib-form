@@ -55,6 +55,19 @@ class OptionRow extends AbstractRow {
     }
 
     /**
+     * Sets the data to this row
+     * @param mixed $data
+     * @return null
+     */
+    public function setData($data) {
+        $this->data = $data;
+
+        if ($this->widget) {
+            $this->widget->setValue($this->processWidgetValue($data));
+        }
+    }
+
+    /**
      * Creates the widget for this row
      * @param string $name
      * @param mixed $default
@@ -65,6 +78,8 @@ class OptionRow extends AbstractRow {
         if (isset($attributes['required']) && $this->getOption(self::OPTION_MULTIPLE)) {
             unset($attributes['required']);
         }
+
+        $default = $this->processWidgetValue($default);
 
         $widget = new OptionWidget($this->type, $name, $default, $attributes);
 
@@ -87,7 +102,7 @@ class OptionRow extends AbstractRow {
         }
 
         if (isset($this->widget)) {
-            $this->widget->setValue($this->data);
+            $this->widget->setValue($this->processWidgetValue($this->data));
 
             $name = $this->widget->getName();
         } else {
@@ -99,6 +114,15 @@ class OptionRow extends AbstractRow {
                 $validationException->addErrors($name, $validator->getErrors());
             }
         }
+    }
+
+    /**
+     * Processes the value of the row for the widget
+     * @param mixed $value Value of the row
+     * @param string Value for the widget
+     */
+    protected function processWidgetValue($value) {
+        return $value;
     }
 
 }

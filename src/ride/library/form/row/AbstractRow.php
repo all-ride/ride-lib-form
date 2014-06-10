@@ -99,6 +99,12 @@ abstract class AbstractRow implements Row {
     protected $isRendered;
 
     /**
+     * Flag to see if this row is required
+     * @var boolean
+     */
+    protected $isRequired;
+
+    /**
      * Filters for this row
      * @var array
      */
@@ -123,6 +129,7 @@ abstract class AbstractRow implements Row {
         $this->data = null;
         $this->widget = null;
         $this->isRendered = false;
+        $this->isRequired = false;
         $this->filters = array();
         $this->validators = array();
     }
@@ -320,8 +327,16 @@ abstract class AbstractRow implements Row {
             foreach ($validators as $name => $options) {
                 if ($options instanceof Validator) {
                     $this->validators[] = $options;
+
+                    if (!$this->isRequired && $options instanceof RequiredValidator) {
+                        $this->isRequired = true;
+                    }
                 } else {
                     $this->validators[] = $validationFactory->createValidator($name, $options);
+
+                    if (!$this->isRequired && $name === 'required') {
+                        $this->isRequired = true;
+                    }
                 }
             }
         }
@@ -354,10 +369,11 @@ abstract class AbstractRow implements Row {
 
         $this->processAttributes($attributes);
 
+        $this->addValidation($validationFactory);
+
         $this->widget = $this->createWidget($name, $default, $attributes);
         $this->widget->setIsMultiple($this->getOption(self::OPTION_MULTIPLE, false));
-
-        $this->addValidation($validationFactory);
+        $this->widget->setIsRequired($this->isRequired);
     }
 
     /**

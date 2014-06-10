@@ -38,6 +38,12 @@ class GenericWidget implements Widget {
     protected $isMultiple;
 
     /**
+     * Flag to see if this widget is required
+     * @var boolean
+     */
+    protected $isRequired;
+
+    /**
      * Constructs a new widget
      * @param string $type Type of the widget
      * @param string $name Name of the row
@@ -85,6 +91,23 @@ class GenericWidget implements Widget {
      */
     public function isMultiple() {
         return $this->isMultiple;
+    }
+
+    /**
+     * Sets whether this widget is required
+     * @param boolean $isRequired
+     * @return null
+     */
+    public function setIsRequired($isRequired) {
+        $this->isRequired = $isRequired;
+    }
+
+    /**
+     * Gets whether this widget is required
+     * @return boolean
+     */
+    public function isRequired() {
+        return $this->isRequired;
     }
 
     /**

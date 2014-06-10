@@ -104,34 +104,21 @@ class ObjectRow extends OptionRow {
      * @return \ride\library\form\widget\Widget
      */
     protected function createWidget($name, $default, array $attributes) {
-        $reflectionHelper = $this->getReflectionHelper();
-        $decorator = $this->getOption(self::OPTION_DECORATOR);
-
-        $propertyValue = $this->getOption(self::OPTION_VALUE);
-        $propertyLabel = $this->getOption(self::OPTION_PROPERTY);
-
-        if ($default && $this->getOption(self::OPTION_MULTIPLE) && !is_array($default)) {
-            $default = array($default);
-        }
-
-        if ($default && $propertyValue) {
-            if (is_array($default)) {
-                foreach ($default as $defaultIndex => $defaultValue) {
-                    $default[$defaultIndex] = $reflectionHelper->getProperty($defaultValue, $propertyValue);
-                }
-            } else {
-                $default = $reflectionHelper->getProperty($default, $propertyValue);
-            }
-        }
-
         if (isset($attributes['required']) && $this->getOption(self::OPTION_MULTIPLE)) {
             unset($attributes['required']);
         }
+
+        $default = $this->processWidgetValue($default);
 
         $widget = new OptionWidget(SelectRow::TYPE, $name, $default, $attributes);
 
         $options = $this->getOption(self::OPTION_OPTIONS);
         if ($options) {
+            $reflectionHelper = $this->getReflectionHelper();
+            $decorator = $this->getOption(self::OPTION_DECORATOR);
+
+            $propertyLabel = $this->getOption(self::OPTION_PROPERTY);
+
             $widgetOptions = array();
 
             if ($decorator) {
@@ -150,6 +137,36 @@ class ObjectRow extends OptionRow {
         }
 
         return $widget;
+    }
+
+    /**
+     * Processes the value of the row for the widget
+     * @param mixed $value Value of the row
+     * @param string Value for the widget
+     */
+    protected function processWidgetValue($value) {
+        if (!$value) {
+            return null;
+        }
+
+        if ($value && $this->getOption(self::OPTION_MULTIPLE) && !is_array($value)) {
+            $value = array($value);
+        }
+
+        $propertyValue = $this->getOption(self::OPTION_VALUE);
+        if ($propertyValue) {
+            $reflectionHelper = $this->getReflectionHelper();
+
+            if (is_array($value)) {
+                foreach ($value as $index => $val) {
+                    $value[$index] = $reflectionHelper->getProperty($val, $propertyValue);
+                }
+            } else {
+                $value = $reflectionHelper->getProperty($value, $propertyValue);
+            }
+        }
+
+        return $value;
     }
 
 }

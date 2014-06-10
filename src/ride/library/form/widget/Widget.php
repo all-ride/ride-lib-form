@@ -33,6 +33,19 @@ interface Widget {
     public function isMultiple();
 
     /**
+     * Sets whether this widget is required
+     * @param boolean $isRequired
+     * @return null
+     */
+    public function setIsRequired($isRequired);
+
+    /**
+     * Gets whether this widget is required
+     * @return boolean
+     */
+    public function isRequired();
+
+    /**
      * Sets the value for this widget
      * @param mixed $value Value to set
      * @param string $part Name of the part

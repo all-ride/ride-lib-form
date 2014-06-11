@@ -6,6 +6,7 @@ use ride\library\form\exception\FormException;
 use ride\library\form\row\factory\RowFactory;
 use ride\library\form\FormBuilder;
 use ride\library\reflection\ReflectionHelper;
+use ride\library\validation\constraint\Constraint;
 
 /**
  * Abstract implementation for a form row with form builder support
@@ -35,6 +36,12 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
      * @var boolean
      */
     protected $isPrepared = false;
+
+    /**
+     * Extra validation constraint
+     * @var \ride\library\validation\constraint\Constraint
+     */
+    protected $validationConstraint;
 
     /**
      * Sets an instance of the reflection helper
@@ -135,6 +142,23 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
      */
     public function build() {
 
+    }
+
+    /**
+     * Sets the extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function setValidationConstraint(Constraint $validationConstraint) {
+        $this->validationConstraint = $validationConstraint;
+    }
+
+    /**
+     * Gets the extra validation constraint
+     * @return \ride\library\validation\constraint\Constraint|null
+     */
+    public function getValidationConstraint() {
+        return $this->validationConstraint;
     }
 
     /**

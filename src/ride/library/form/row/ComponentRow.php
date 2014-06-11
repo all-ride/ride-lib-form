@@ -214,6 +214,10 @@ class ComponentRow extends AbstractFormBuilderRow {
         foreach ($this->rows as $name => $row) {
             $row->applyValidation($validationException);
         }
+
+        if ($this->validationConstraint) {
+            $this->validationConstraint->validateEntry($this->getData(), $validationException);
+        }
     }
 
     /**

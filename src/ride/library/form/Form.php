@@ -23,6 +23,14 @@ interface Form extends FormBuilder {
     public function getData();
 
     /**
+     * Validates this form
+     * @return null
+     * @throws \ride\library\validation\exception\ValidationException when the
+     * data in the form could not be validated
+     */
+    public function validate();
+
+    /**
      * Sets the validation exception
      * @param \ride\library\validation\exception\ValidationException $exception
      * @return null

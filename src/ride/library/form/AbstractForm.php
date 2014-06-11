@@ -6,6 +6,7 @@ use ride\library\form\exception\FormException;
 use ride\library\form\row\factory\RowFactory;
 use ride\library\form\view\GenericView;
 use ride\library\reflection\ReflectionHelper;
+use ride\library\validation\constraint\Constraint;
 use ride\library\validation\factory\ValidationFactory;
 use ride\library\validation\exception\ValidationException;
 
@@ -37,6 +38,12 @@ abstract class AbstractForm implements Form {
      * @var \ride\library\validation\exception\ValidationException
      */
     protected $validationException;
+
+    /**
+     * Extra validation constraint
+     * @var \ride\library\validation\constraint\Constraint
+     */
+    protected $validationConstraint;
 
     /**
      * Instance of the validation factory
@@ -159,7 +166,7 @@ abstract class AbstractForm implements Form {
      * Validates this form
      * @return null
      * @throws \ride\library\validation\exception\ValidationException when the
-     * data on the form could not be validated
+     * data in the form could not be validated
      */
     public function validate() {
         $this->getValidationException();
@@ -175,6 +182,15 @@ abstract class AbstractForm implements Form {
         }
 
         $this->dataNeedsProcessing = true;
+
+        if (!$this->validationConstraint) {
+            return;
+        }
+
+        $this->validationConstraint->validateEntry($this->getData(), $this->validationException);
+        if ($this->validationException->hasErrors()) {
+            throw $this->validationException;
+        }
     }
 
     /**
@@ -196,6 +212,23 @@ abstract class AbstractForm implements Form {
         }
 
         return $this->validationException;
+    }
+
+    /**
+     * Sets the extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function setValidationConstraint(Constraint $validationConstraint) {
+        $this->validationConstraint = $validationConstraint;
+    }
+
+    /**
+     * Gets the extra validation constraint
+     * @return \ride\library\validation\constraint\Constraint
+     */
+    public function getValidationConstraint() {
+        return $this->validationConstraint;
     }
 
     /**

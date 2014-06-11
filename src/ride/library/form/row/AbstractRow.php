@@ -126,12 +126,13 @@ abstract class AbstractRow implements Row {
         $this->type = static::TYPE;
         $this->name = $name;
         $this->options = $options;
-        $this->data = null;
         $this->widget = null;
         $this->isRendered = false;
         $this->isRequired = false;
         $this->filters = array();
         $this->validators = array();
+
+        $this->data = $this->getDefault();
     }
 
     /**

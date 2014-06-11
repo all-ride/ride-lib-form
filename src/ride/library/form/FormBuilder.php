@@ -2,6 +2,8 @@
 
 namespace ride\library\form;
 
+use ride\library\validation\constraint\Constraint;
+
 /**
  * Interface for a form builder
  */
@@ -61,5 +63,18 @@ interface FormBuilder {
      * @return \ride\library\form\Form
      */
     public function build();
+
+    /**
+     * Sets the extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function setValidationConstraint(Constraint $validationConstraint);
+
+    /**
+     * Gets the extra validation constraint
+     * @return \ride\library\validation\constraint\Constraint
+     */
+    public function getValidationConstraint();
 
 }

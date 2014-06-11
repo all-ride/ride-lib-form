@@ -78,12 +78,8 @@ class FileRow extends AbstractRow {
             return;
         }
 
-        foreach ($validators as $name => $validator) {
-            if ($name == 'required' || $validator instanceof RequiredValidator) {
-                $attributes['required'] = 'required';
-
-                break;
-            }
+        if ($this->isRequired) {
+            $attributes['required'] = 'required';
         }
     }
 

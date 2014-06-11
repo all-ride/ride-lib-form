@@ -69,6 +69,12 @@ interface Row {
     public function isReadOnly();
 
     /**
+     * Gets whether the field is required
+     * @return boolean
+     */
+    public function isRequired();
+
+    /**
      * Gets the widget for this row, if applicable
      * @return \ride\library\form\widget\Widget
      */

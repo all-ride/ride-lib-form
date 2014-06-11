@@ -234,6 +234,14 @@ abstract class AbstractRow implements Row {
     }
 
     /**
+     * Gets whether the field is required
+     * @return boolean
+     */
+    public function isRequired() {
+        $this->isRequired;
+    }
+
+    /**
      * Gets the default value for the row
      * @return mixed
      */

@@ -76,6 +76,10 @@ class CollectionRow extends AbstractFormBuilderRow {
         }
 
         $this->data = $data;
+
+        if ($this->rows) {
+            $this->buildData();
+        }
     }
 
     /**
@@ -108,39 +112,51 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
-        $name = $this->getPropertyName($namePrefix);
+
+        $this->rowNamePrefix = $namePrefix;
+        $this->rowName = $this->getPropertyName($namePrefix);
+        $this->rowIdPrefix = $idPrefix;
+        $this->rowId = $idPrefix . str_replace('[', '-', str_replace('][', '-', $this->rowName));
+        $this->validationFactory = $validationFactory;
 
         $type = $this->getOption(self::OPTION_TYPE);
         if (!$type) {
-            throw new FormException('Could not build ' . $name . ': no type option provided');
+            throw new FormException('Could not build ' . $this->rowName . ': no type option provided');
         }
 
         $this->addValidation($validationFactory);
 
+        $this->buildData();
+    }
+
+    /**
+     * Builds the row based on the data
+     * @return null
+     */
+    protected function buildData() {
+        $type = $this->getOption(self::OPTION_TYPE);
         $options = $this->getOption(self::OPTION_OPTIONS, array());
 
         if ($type !== ComponentRow::TYPE) {
-            $id = $idPrefix . str_replace('[', '-', str_replace('][', '-', $name));
-
             $options[self::OPTION_MULTIPLE] = true;
 
-            $this->rows[$name] = $this->rowFactory->createRow($type, $name, $options);
+            $this->rows[$this->rowName] = $this->rowFactory->createRow($type, $this->rowName, $options);
             if (isset($this->processedData)) {
-                $this->rows[$name]->setData($this->oldData);
-                $this->rows[$name]->processData($this->processedData);
+                $this->rows[$this->rowName]->setData($this->oldData);
+                $this->rows[$this->rowName]->processData($this->processedData);
 
-                $this->data = $this->rows[$name]->getData();
+                $this->data = $this->rows[$this->rowName]->getData();
 
                 unset($this->oldData);
                 unset($this->processedData);
             } else {
-                $this->rows[$name]->setData($this->data);
+                $this->rows[$this->rowName]->setData($this->data);
             }
 
-            $this->rows[$name]->buildRow('', $idPrefix, $validationFactory);
+            $this->rows[$this->rowName]->buildRow('', $this->rowIdPrefix, $this->validationFactory);
 
-            $this->widget = $this->rows[$name]->getWidget();
-            $this->widget->setAttribute('id', $id);
+            $this->widget = $this->rows[$this->rowName]->getWidget();
+            $this->widget->setAttribute('id', $this->rowId);
             $this->widget->setIsMultiple(true);
 
             return;
@@ -165,7 +181,7 @@ class CollectionRow extends AbstractFormBuilderRow {
         $this->validationErrors = array();
 
         foreach ($data as $key => $value) {
-            $namePrefix = $name . '[' . $key . '][';
+            $namePrefix = $this->rowName . '[' . $key . '][';
 
             if (is_object($component)) {
                 $options['component'] = clone $component;
@@ -173,7 +189,7 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $options[ComponentRow::OPTION_EMBED] = true;
 
-            $row = $this->rowFactory->createRow($type, $name, $options);
+            $row = $this->rowFactory->createRow($type, $this->rowName, $options);
 
             if ($key !== self::VALUE_PROTOTYPE && isset($this->processedData)) {
                 if (isset($this->oldData[$key])) {
@@ -194,7 +210,7 @@ class CollectionRow extends AbstractFormBuilderRow {
                 $row->setData($value);
             }
 
-            $row->buildRow($namePrefix, $idPrefix, $validationFactory);
+            $row->buildRow($namePrefix, $this->rowIdPrefix, $this->validationFactory);
 
             $this->rows[$key] = $row;
         }
@@ -262,6 +278,20 @@ class CollectionRow extends AbstractFormBuilderRow {
                 $validationException->addErrors($fieldName, $fieldErrors);
             }
         }
+    }
+
+    /**
+     * Prepares the row for the form view
+     * @return null
+     */
+    public function prepareForView() {
+        parent::prepareForView();
+
+        unset($this->rowNamePrefix);
+        unset($this->rowName);
+        unset($this->rowIdPrefix);
+        unset($this->rowId);
+        unset($this->validationFactory);
     }
 
 }

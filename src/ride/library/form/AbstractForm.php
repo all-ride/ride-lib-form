@@ -237,7 +237,13 @@ abstract class AbstractForm implements Form {
      * @return null
      */
     public function setData($data) {
+        $isArray = is_array($data);
+
         foreach ($this->rows as $name => $row) {
+            if ($isArray && !array_key_exists($name, $data)) {
+                continue;
+            }
+
             $row->setData($this->reflectionHelper->getProperty($data, $name));
         }
 

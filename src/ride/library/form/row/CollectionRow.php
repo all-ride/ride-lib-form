@@ -30,6 +30,12 @@ class CollectionRow extends AbstractFormBuilderRow {
     const OPTION_OPTIONS = 'options';
 
     /**
+     * Option to enable ordering through drag and drop
+     * @var string
+     */
+    const OPTION_ORDER = 'order';
+
+    /**
      * Key for the prototype value
      * @var string
      */
@@ -112,7 +118,6 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function buildRow($namePrefix, $idPrefix, ValidationFactory $validationFactory) {
-
         $this->rowNamePrefix = $namePrefix;
         $this->rowName = $this->getPropertyName($namePrefix);
         $this->rowIdPrefix = $idPrefix;

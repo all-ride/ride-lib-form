@@ -13,4 +13,17 @@ class ButtonRow extends AbstractRow {
      */
     const TYPE = 'button';
 
+    /**
+     * Processes the request and updates the data of this row
+     * @param array $values Submitted values
+     * @return null
+     */
+    public function processData(array $values) {
+        if (isset($values[$this->name])) {
+            $this->data = true;
+        } else {
+            $this->data = false;
+        }
+    }
+
 }

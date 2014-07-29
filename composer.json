@@ -11,7 +11,7 @@
     ],
     "require": {
         "ride/lib-common": ">=0.4.0",
-        "ride/lib-image": ">=0.4.2",
+        "ride/lib-image": ">=0.5.0",
         "ride/lib-reflection": ">=0.4.0",
         "ride/lib-system": ">=0.3.1",
         "ride/lib-validation": ">=0.3.0"

@@ -2,7 +2,7 @@
 
 namespace ride\library\validation\validator;
 
-use ride\library\image\io\ImageFactory;
+use ride\library\image\ImageFactory;
 use ride\library\system\file\browser\FileBrowser;
 use ride\library\system\file\File;
 use ride\library\validation\ValidationError;
@@ -271,12 +271,14 @@ class ImageValidator extends AbstractValidator {
                 $file = $value;
             }
 
+            $image = $this->imageFactory->createImage();
+
             try {
-                $image = $this->imageFactory->read($file);
+                $image->read($file);
             } catch (Exception $exception) {
                 $file = $this->fileBrowser->getPublicFile($value);
 
-                $image = $this->imageFactory->read($file);
+                $image->read($file);
             }
         } catch (Exception $exception) {
             $parameters['message'] = $exception->getMessage();
@@ -287,28 +289,30 @@ class ImageValidator extends AbstractValidator {
             return false;
         }
 
-        if ($this->minWidth && $image->getWidth() < $this->minWidth) {
+        $imageDimension = $image->getDimension();
+
+        if ($this->minWidth && $imageDimension->getWidth() < $this->minWidth) {
             $parameters['width'] = $this->minWidth;
 
             $error = new ValidationError(self::CODE_WIDTH_MIN, self::MESSAGE_WIDTH_MIN, $parameters);
             $this->addError($error);
         }
 
-        if ($this->minHeight && $image->getHeight() < $this->minHeight) {
+        if ($this->minHeight && $imageDimension->getHeight() < $this->minHeight) {
             $parameters['height'] = $this->minHeight;
 
             $error = new ValidationError(self::CODE_HEIGHT_MIN, self::MESSAGE_HEIGHT_MIN, $parameters);
             $this->addError($error);
         }
 
-        if ($this->maxWidth && $image->getWidth() > $this->maxWidth) {
+        if ($this->maxWidth && $imageDimension->getWidth() > $this->maxWidth) {
             $parameters['width'] = $this->maxWidth;
 
             $error = new ValidationError(self::CODE_WIDTH_MAX, self::MESSAGE_WIDTH_MAX, $parameters);
             $this->addError($error);
         }
 
-        if ($this->maxHeight && $image->getHeight() > $this->maxHeight) {
+        if ($this->maxHeight && $imageDimension->getHeight() > $this->maxHeight) {
             $parameters['height'] = $this->maxHeight;
 
             $error = new ValidationError(self::CODE_HEIGHT_MAX, self::MESSAGE_HEIGHT_MAX, $parameters);

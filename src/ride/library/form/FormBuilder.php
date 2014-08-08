@@ -65,6 +65,13 @@ interface FormBuilder {
     public function build();
 
     /**
+     * Adds an extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function addValidationConstraint(Constraint $validationConstraint);
+
+    /**
      * Sets the extra validation constraint
      * @param \ride\library\validation\constraint\Constraint $validationConstraint
      * @return null

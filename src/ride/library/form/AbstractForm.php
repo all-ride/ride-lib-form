@@ -6,7 +6,9 @@ use ride\library\form\exception\FormException;
 use ride\library\form\row\factory\RowFactory;
 use ride\library\form\view\GenericView;
 use ride\library\reflection\ReflectionHelper;
+use ride\library\validation\constraint\ChainConstraint;
 use ride\library\validation\constraint\Constraint;
+use ride\library\validation\constraint\GenericConstraint;
 use ride\library\validation\factory\ValidationFactory;
 use ride\library\validation\exception\ValidationException;
 
@@ -187,10 +189,13 @@ abstract class AbstractForm implements Form {
             return;
         }
 
-        $this->validationConstraint->validateEntry($this->getData(), $this->validationException);
+        $data = $this->getData();
+        $data = $this->validationConstraint->constrain($data, $this->validationException);
         if ($this->validationException->hasErrors()) {
             throw $this->validationException;
         }
+
+        $this->setData($data);
     }
 
     /**
@@ -212,6 +217,25 @@ abstract class AbstractForm implements Form {
         }
 
         return $this->validationException;
+    }
+
+    /**
+     * Adds an extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function addValidationConstraint(Constraint $validationConstraint) {
+        if (!($this->validationConstraint instanceof ChainConstraint && !$this->validationConstraint instanceof GenericConstraint)) {
+            $previousConstraint = $this->validationConstraint;
+
+            $this->validationConstraint = new ChainConstraint();
+
+            if ($previousConstraint) {
+                $this->validationConstraint->addConstraint($previousConstraint);
+            }
+        }
+
+        $this->validationConstraint->addConstraint($validationConstraint);
     }
 
     /**

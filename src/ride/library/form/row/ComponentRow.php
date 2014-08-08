@@ -216,7 +216,7 @@ class ComponentRow extends AbstractFormBuilderRow {
         }
 
         if ($this->validationConstraint) {
-            $this->validationConstraint->validateEntry($this->getData(), $validationException);
+            $this->validationConstraint->constrain($this->getData(), $validationException);
         }
     }
 

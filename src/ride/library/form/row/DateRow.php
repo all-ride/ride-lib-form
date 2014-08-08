@@ -35,6 +35,12 @@ class DateRow extends AbstractRow {
     const OPTION_FORMAT = 'format';
 
     /**
+     * Option to trim the time
+     * @var string
+     */
+    const OPTION_ROUND = 'round';
+
+    /**
      * Gets the date format
      * @return string
      */
@@ -81,6 +87,10 @@ class DateRow extends AbstractRow {
             $this->data = $value;
 
             throw $exception;
+        }
+
+        if ($this->getOption(self::OPTION_ROUND)) {
+            $result -= $result % 86400;
         }
 
         return $result;

@@ -271,7 +271,7 @@ class CollectionRow extends AbstractFormBuilderRow {
         }
 
         if ($this->validationConstraint) {
-            $this->validationConstraint->validateEntry($this->data, $validationException);
+            $this->validationConstraint->constrain($this->data, $validationException);
         }
 
         if (!$this->validationErrors) {

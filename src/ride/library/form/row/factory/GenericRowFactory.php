@@ -19,6 +19,7 @@ use ride\library\form\row\PasswordRow;
 use ride\library\form\row\SelectRow;
 use ride\library\form\row\StringRow;
 use ride\library\form\row\TextRow;
+use ride\library\form\row\TimeRow;
 use ride\library\form\row\WebsiteRow;
 use ride\library\form\row\WysiwygRow;
 use ride\library\reflection\ReflectionHelper;
@@ -96,6 +97,10 @@ class GenericRowFactory extends AbstractRowFactory {
             case 'date':
             case 'datetime':
                 $row = new DateRow($name, $options);
+
+                break;
+            case 'time':
+                $row = new TimeRow($name, $options);
 
                 break;
             case 'integer':

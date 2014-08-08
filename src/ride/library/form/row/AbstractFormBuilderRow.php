@@ -6,7 +6,9 @@ use ride\library\form\exception\FormException;
 use ride\library\form\row\factory\RowFactory;
 use ride\library\form\FormBuilder;
 use ride\library\reflection\ReflectionHelper;
+use ride\library\validation\constraint\ChainConstraint;
 use ride\library\validation\constraint\Constraint;
+use ride\library\validation\constraint\GenericConstraint;
 
 /**
  * Abstract implementation for a form row with form builder support
@@ -145,6 +147,25 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
     }
 
     /**
+     * Adds an extra validation constraint
+     * @param \ride\library\validation\constraint\Constraint $validationConstraint
+     * @return null
+     */
+    public function addValidationConstraint(Constraint $validationConstraint) {
+        if (!($this->validationConstraint instanceof ChainConstraint && !$this->validationConstraint instanceof GenericConstraint)) {
+            $previousConstraint = $this->validationConstraint;
+
+            $this->validationConstraint = new ChainConstraint();
+
+            if ($previousConstraint) {
+                $this->validationConstraint->addConstraint($previousConstraint);
+            }
+        }
+
+        $this->validationConstraint->addConstraint($validationConstraint);
+    }
+
+    /**
      * Sets the extra validation constraint
      * @param \ride\library\validation\constraint\Constraint $validationConstraint
      * @return null
@@ -243,7 +264,10 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
                 continue;
             }
 
-            $styles += $row->getStyles();
+            $rowStyles = $row->getStyles();
+            if ($rowStyles) {
+                $styles += $rowStyles;
+            }
         }
 
         return $styles;

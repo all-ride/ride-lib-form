@@ -3,6 +3,7 @@
 namespace ride\library\form\row;
 
 use ride\library\form\component\Component;
+use ride\library\form\component\HtmlComponent;
 use ride\library\form\exception\FormException;
 use ride\library\form\widget\GenericWidget;
 use ride\library\validation\exception\ValidationException;
@@ -238,6 +239,51 @@ class ComponentRow extends AbstractFormBuilderRow {
         $this->isInitialized = true;
 
         return true;
+    }
+
+    /**
+     * Gets all the javascript files which are needed for this row
+     * @return array|null
+     */
+    public function getJavascripts() {
+        $javascripts = parent::getJavascripts();
+
+        $component = $this->getComponent();
+        if ($component instanceof HtmlComponent) {
+            $javascripts += $component->getJavascripts();
+        }
+
+        return $javascripts;
+    }
+
+    /**
+     * Gets all the inline javascripts which are needed for this row
+     * @return array|null
+    */
+    public function getInlineJavascripts() {
+        $inlineJavascripts = parent::getInlineJavascripts();
+
+        $component = $this->getComponent();
+        if ($component instanceof HtmlComponent) {
+            $inlineJavascripts += $component->getInlineJavascripts();
+        }
+
+        return $inlineJavascripts;
+    }
+
+    /**
+     * Gets all the stylesheets which are needed for this row
+     * @return array|null
+     */
+    public function getStyles() {
+        $styles = parent::getStyles();
+
+        $component = $this->getComponent();
+        if ($component instanceof HtmlComponent) {
+            $styles += $component->getStyles();
+        }
+
+        return $styles;
     }
 
 }

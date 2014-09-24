@@ -23,6 +23,19 @@ class OptionRow extends AbstractRow {
     const OPTION_OPTIONS = 'options';
 
     /**
+     * Sets the options for the widget
+     * @param array $options
+     * @return null
+     */
+    public function setOptions(array $options) {
+        $this->options[self::OPTION_OPTIONS] = $options;
+
+        if ($this->widget) {
+            $this->widget->setOptions($options);
+        }
+    }
+
+    /**
      * Processes the request and updates the data of this row
      * @param array $values Submitted values
      * @return null

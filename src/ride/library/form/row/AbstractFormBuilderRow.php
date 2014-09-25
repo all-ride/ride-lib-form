@@ -85,7 +85,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
      * @param string $name Name of the row
      * @param string $type Type of the row
      * @param array $options Extra options for the row
-     * @return null
+     * @return \ride\library\form\row\Row
      */
     public function addRow($name, $type, array $options = array()) {
         if (!$this->rowFactory) {
@@ -93,6 +93,8 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
         }
 
         $this->rows[$name] = $this->rowFactory->createRow($type, $name, $options);
+
+        return $this->rows[$name];
     }
 
     /**

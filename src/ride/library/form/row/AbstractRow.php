@@ -382,6 +382,7 @@ abstract class AbstractRow implements Row {
 
         $this->widget = $this->createWidget($name, $default, $attributes);
         $this->widget->setIsMultiple($this->getOption(self::OPTION_MULTIPLE, false));
+        $this->widget->setIsDisabled($this->getOption(self::OPTION_DISABLED, false));
         $this->widget->setIsRequired($this->isRequired);
     }
 

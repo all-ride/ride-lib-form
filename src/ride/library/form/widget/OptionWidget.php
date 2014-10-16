@@ -19,11 +19,7 @@ class OptionWidget extends GenericWidget {
      * @return null
      */
     public function setOptions(array $options) {
-        if ($options) {
-            $this->options = $options;
-        } else {
-            $this->options = null;
-        }
+        $this->options = $options;
     }
 
     /**

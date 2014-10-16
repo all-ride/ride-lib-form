@@ -46,6 +46,19 @@ interface Widget {
     public function isRequired();
 
     /**
+     * Sets whether this widget is disabled
+     * @param boolean $isDisabled
+     * @return null
+     */
+    public function setIsDisabled($isDisabled);
+
+    /**
+     * Gets whether this widget is disabled
+     * @return boolean
+     */
+    public function isDisabled();
+
+    /**
      * Sets the value for this widget
      * @param mixed $value Value to set
      * @param string $part Name of the part

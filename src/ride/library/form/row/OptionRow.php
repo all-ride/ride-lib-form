@@ -97,7 +97,7 @@ class OptionRow extends AbstractRow {
         $widget = new OptionWidget($this->type, $name, $default, $attributes);
 
         $options = $this->getOption(self::OPTION_OPTIONS);
-        if ($options) {
+        if (is_array($options)) {
             $widget->setOptions($options);
         }
 

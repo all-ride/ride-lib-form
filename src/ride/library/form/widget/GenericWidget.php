@@ -44,6 +44,12 @@ class GenericWidget implements Widget {
     protected $isRequired;
 
     /**
+     * Flag to see if this widget is disabled
+     * @var boolean
+     */
+    protected $isDisabled;
+
+    /**
      * Constructs a new widget
      * @param string $type Type of the widget
      * @param string $name Name of the row
@@ -108,6 +114,23 @@ class GenericWidget implements Widget {
      */
     public function isRequired() {
         return $this->isRequired;
+    }
+
+    /**
+     * Sets whether this widget is disabled
+     * @param boolean $isDisabled
+     * @return null
+     */
+    public function setIsDisabled($isDisabled) {
+        $this->isDisabled = $isDisabled;
+    }
+
+    /**
+     * Gets whether this widget is disabled
+     * @return boolean
+     */
+    public function isDisabled() {
+        return $this->isDisabled;
     }
 
     /**

@@ -36,6 +36,18 @@ class CollectionRow extends AbstractFormBuilderRow {
     const OPTION_ORDER = 'order';
 
     /**
+     * Option to enable add button
+     * @var string
+     */
+    const OPTION_DISABLE_ADD = 'disable_add';
+
+    /**
+     * Option to enable remove button
+     * @var string
+     */
+    const OPTION_DISABLE_REMOVE = 'disable_remove';
+
+    /**
      * Key for the prototype value
      * @var string
      */

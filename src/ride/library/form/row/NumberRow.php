@@ -13,4 +13,17 @@ class NumberRow extends AbstractRow {
      */
     const TYPE = 'number';
 
+    /**
+     * Processes the request and updates the data of this row
+     * @param array $values Submitted values
+     * @return null
+     */
+    public function processData(array $values) {
+        parent::processData($values);
+
+        if (!is_numeric($this->data)) {
+            $this->setData(0);
+        }
+    }
+
 }

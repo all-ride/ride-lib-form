@@ -110,8 +110,6 @@ class ObjectRow extends OptionRow {
 
         $default = $this->processWidgetValue($default);
 
-        $widget = new OptionWidget(SelectRow::TYPE, $name, $default, $attributes);
-
         $options = $this->getOption(self::OPTION_OPTIONS);
         if ($options) {
             $reflectionHelper = $this->getReflectionHelper();
@@ -132,9 +130,21 @@ class ObjectRow extends OptionRow {
             } else {
                 $widgetOptions = $options;
             }
-
-            $widget->setOptions($widgetOptions);
+        } else {
+            $widgetOptions = array();
         }
+
+        $widgetType = $this->getOption(self::OPTION_WIDGET);
+        if (!$widgetType) {
+            if (count($widgetOptions) < 7) {
+                $widgetType = OptionRow::TYPE;
+            } else {
+                $widgetType = SelectRow::TYPE;
+            }
+        }
+
+        $widget = new OptionWidget($widgetType, $name, $default, $attributes);
+        $widget->setOptions($widgetOptions);
 
         return $widget;
     }

@@ -23,6 +23,12 @@ class OptionRow extends AbstractRow {
     const OPTION_OPTIONS = 'options';
 
     /**
+     * Option for the widget
+     * @var string
+     */
+    const OPTION_WIDGET = 'widget';
+
+    /**
      * Sets the options for the widget
      * @param array $options
      * @return null
@@ -94,7 +100,8 @@ class OptionRow extends AbstractRow {
 
         $default = $this->processWidgetValue($default);
 
-        $widget = new OptionWidget($this->type, $name, $default, $attributes);
+        $widgetType = $this->getOption(self::OPTION_WIDGET, $this->type);
+        $widget = new OptionWidget($widgetType, $name, $default, $attributes);
 
         $options = $this->getOption(self::OPTION_OPTIONS);
         if (is_array($options)) {

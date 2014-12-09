@@ -62,7 +62,7 @@ class TimeRow extends AbstractRow {
      * @return mixed
      */
     public function getData() {
-        if ($this->data === null || $this->data === '') {
+        if ($this->data === null || $this->data === '' || strpos($this->data, ':') === false) {
             return null;
         }
 

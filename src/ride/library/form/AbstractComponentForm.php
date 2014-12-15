@@ -148,6 +148,7 @@ abstract class AbstractComponentForm extends AbstractForm {
         $this->componentRow->buildRow('', '', $this->validationFactory);
 
         $this->rows = $this->componentRow->getRows();
+        $this->validationConstraint = $this->componentRow->getValidationConstraint();
     }
 
 }

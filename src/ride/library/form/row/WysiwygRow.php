@@ -83,26 +83,26 @@ class WysiwygRow extends TextRow implements HtmlRow {
 
     /**
      * Gets all the javascript files which are needed for this row
-     * @return array|null
+     * @return array
      */
     public function getJavascripts() {
-        return null;
+        return array();
     }
 
     /**
      * Gets all the inline javascripts which are needed for this row
-     * @return array|null
+     * @return array
     */
     public function getInlineJavascripts() {
-        return null;
+        return array();
     }
 
     /**
      * Gets all the stylesheets which are needed for this row
-     * @return array|null
+     * @return array
      */
     public function getStyles() {
-        return null;
+        return array();
     }
 
 }

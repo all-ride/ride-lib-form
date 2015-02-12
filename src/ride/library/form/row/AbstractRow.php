@@ -218,6 +218,14 @@ abstract class AbstractRow implements Row {
     }
 
     /**
+     * Gets whether this field has multiple values
+     * @return boolean
+     */
+    public function isMultiple() {
+        return $this->getOption(self::OPTION_MULTIPLE, false);
+    }
+
+    /**
      * Gets whether the field is disabled
      * @return boolean
      */

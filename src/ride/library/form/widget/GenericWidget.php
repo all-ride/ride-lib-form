@@ -179,6 +179,20 @@ class GenericWidget implements Widget {
     }
 
     /**
+     * Gets an attribute
+     * @param string $key Name of the attribute
+     * @param mixed $default Default value when the attribute is not set
+     * @return mixed
+     */
+    public function getAttribute($key, $default = null) {
+        if (!isset($this->attributes[$key])) {
+            return $default;
+        }
+
+        return $this->attributes[$key];
+    }
+
+    /**
      * Gets the attributes for this widget
      * @return array
      */

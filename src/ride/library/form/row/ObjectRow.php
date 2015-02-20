@@ -113,11 +113,20 @@ class ObjectRow extends OptionRow {
         $options = $this->getOption(self::OPTION_OPTIONS);
         if ($options) {
             $reflectionHelper = $this->getReflectionHelper();
-            $decorator = $this->getOption(self::OPTION_DECORATOR);
-
-            $propertyLabel = $this->getOption(self::OPTION_PROPERTY);
 
             $widgetOptions = array();
+
+            $propertyValue = $this->getOption(self::OPTION_VALUE);
+            if ($propertyValue) {
+                foreach ($options as $index => $value) {
+                    $widgetOptions[$reflectionHelper->getProperty($value, $propertyValue)] = $value;
+                }
+
+                $options = $widgetOptions;
+            }
+
+            $decorator = $this->getOption(self::OPTION_DECORATOR);
+            $propertyLabel = $this->getOption(self::OPTION_PROPERTY);
 
             if ($decorator) {
                 foreach ($options as $index => $value) {

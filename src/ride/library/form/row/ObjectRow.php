@@ -68,8 +68,25 @@ class ObjectRow extends OptionRow {
      * @return null
      */
     public function processData(array $values) {
-        $options = $this->getOption(self::OPTION_OPTIONS);
         $isMultiple = $this->getOption(self::OPTION_MULTIPLE);
+        $options = $this->getOption(self::OPTION_OPTIONS);
+        $propertyValue = $this->getOption(self::OPTION_VALUE);
+
+        if ($options && $propertyValue) {
+            // normalize options by using the property field for the option keys
+            $reflectionHelper = $this->getReflectionHelper();
+
+            $processedOptions = array();
+            foreach ($options as $index => $value) {
+                if (!is_object($value)) {
+                    $value = null;
+                }
+
+                $processedOptions[$reflectionHelper->getProperty($value, $propertyValue)] = $value;
+            }
+
+            $options = $processedOptions;
+        }
 
         if (isset($values[$this->name])) {
             $data = $values[$this->name];

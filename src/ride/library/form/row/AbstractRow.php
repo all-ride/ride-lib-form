@@ -360,6 +360,14 @@ abstract class AbstractRow implements Row {
     }
 
     /**
+     * Gets the validators of this row
+     * @return array Array with the instance of Validator as value
+     */
+    public function getValidators() {
+        return $this->validators;
+    }
+
+    /**
      * Performs necessairy build actions for this row
      * @param string $namePrefix Prefix for the row name
      * @param string $idPrefix Prefix for the field id

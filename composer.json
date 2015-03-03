@@ -2,7 +2,7 @@
     "name": "ride/lib-form",
     "description": "Form library of the Ride framework",
     "license": "MIT",
-    "version": "0.12.10",
+    "version": "0.12.11",
     "authors": [
         {
             "name": "Joris Vandeweerd",
@@ -14,7 +14,7 @@
         "ride/lib-image": ">=0.5.0",
         "ride/lib-reflection": ">=0.4.0",
         "ride/lib-system": ">=0.3.1",
-        "ride/lib-validation": ">=0.4.0"
+        "ride/lib-validation": ">=0.6.0"
     },
     "autoload": {
         "psr-0": {

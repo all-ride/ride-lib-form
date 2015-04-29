@@ -197,6 +197,8 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
         }
 
         foreach ($this->rows as $row) {
+            $row->prepareForView();
+
             if (!$row instanceof self) {
                 continue;
             }

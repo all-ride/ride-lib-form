@@ -10,6 +10,19 @@ use ride\library\validation\exception\ValidationException;
 interface Form extends FormBuilder {
 
     /**
+     * Sets the action to identify the submission of this form
+     * @param string $action
+     * @return null
+     */
+    public function setAction($action);
+
+    /**
+     * Gets the action to identify the submission of this form
+     * @return string|null
+     */
+    public function getAction();
+
+    /**
      * Sets the data to this form
      * @param mixed $data Data for this form
      * @return null

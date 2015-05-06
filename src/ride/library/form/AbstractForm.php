@@ -18,10 +18,22 @@ use ride\library\validation\exception\ValidationException;
 abstract class AbstractForm implements Form {
 
     /**
+     * Name of the action row
+     * @var string
+     */
+    const ROW_ACTION = '__action';
+
+    /**
      * Object factory
      * @var ride\library\reflection\ReflectionHelper
      */
     protected $reflectionHelper;
+
+    /**
+     * Action to identify the form submission
+     * @var string
+     */
+    protected $action;
 
     /**
      * Data of this form
@@ -86,6 +98,27 @@ abstract class AbstractForm implements Form {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * Sets the action to identify the submission of this form
+     * @param string $action
+     * @return null
+     */
+    public function setAction($action) {
+        $this->action = $action;
+
+        $this->rows[self::ROW_ACTION] = $this->rowFactory->createRow('hidden', self::ROW_ACTION, array(
+            'default' => $action,
+        ));
+    }
+
+    /**
+     * Gets the action to identify the submission of this form
+     * @return string|null
+     */
+    public function getAction() {
+        return $this->action;
     }
 
     /**

@@ -15,8 +15,8 @@ class DateWidget extends GenericWidget {
      * @param array $attributes Extra attributes
      * @return null
      */
-    public function __construct($name, $value = null, array $attributes = array(), $isMultiple = false) {
-        parent::__construct('date', $name, $value, $attributes, $isMultiple);
+    public function __construct($type, $name, $value = null, array $attributes = array(), $isMultiple = false) {
+        parent::__construct($type, $name, $value, $attributes, $isMultiple);
     }
 
     /**

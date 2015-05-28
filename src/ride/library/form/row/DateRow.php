@@ -90,7 +90,7 @@ class DateRow extends AbstractRow {
         }
 
         if ($this->getOption(self::OPTION_ROUND)) {
-            $result -= $result % 86400;
+            $result -= ($result + date('Z', $result)) % 86400;
         }
 
         return $result;
@@ -125,7 +125,7 @@ class DateRow extends AbstractRow {
         $attributes['data-format-php'] = $format;
         $attributes['data-format-jquery'] = $dateConverter->convertFormatFromPhp($format);
 
-        return new DateWidget($name, $default, $attributes);
+        return new DateWidget('date', $name, $default, $attributes);
     }
 
 }

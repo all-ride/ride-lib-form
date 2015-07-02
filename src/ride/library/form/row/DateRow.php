@@ -67,8 +67,7 @@ class DateRow extends AbstractRow {
     protected function parseValue($value) {
         if (!$value) {
             return null;
-        }
-        if (is_numeric($value)) {
+        } elseif (is_numeric($value)) {
             return $value;
         }
 

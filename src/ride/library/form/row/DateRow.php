@@ -65,7 +65,10 @@ class DateRow extends AbstractRow {
      * @throws \ride\library\form\row\ValidationException
      */
     protected function parseValue($value) {
-        if (!$value || is_numeric($value)) {
+        if (!$value) {
+            return null;
+        }
+        if (is_numeric($value)) {
             return $value;
         }
 

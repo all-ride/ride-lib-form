@@ -180,13 +180,12 @@ class ComponentRow extends AbstractFormBuilderRow {
         $this->initialize();
 
         $name = $this->getPropertyName($namePrefix);
-
         if (!$namePrefix || !$this->getOption(self::OPTION_EMBED)) {
             $namePrefix = $this->getPropertyName($namePrefix) . '[';
         }
 
         if ($namePrefix == $this->getName() . '[') {
-            $namePrefix = '';
+            // $namePrefix = '';
             $idPrefix = $this->getName() . '-';
         }
 

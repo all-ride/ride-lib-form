@@ -93,7 +93,7 @@ abstract class AbstractView implements View {
 
         if (isset($this->validationErrors[$field])) {
             foreach ($this->validationErrors[$field] as $error) {
-                $messages[(string) $error] = true;
+                $messages[(string) $error] = $error;
             }
         }
 

@@ -47,6 +47,10 @@ class LabelRow extends AbstractRow {
             $default = $decorator->decorate($default);
         }
 
+        if (is_array($default)) {
+            $default = implode(', ', $default);
+        }
+
         return parent::createWidget($name, $default, $attributes);
     }
 

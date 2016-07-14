@@ -90,14 +90,20 @@ class ComponentRow extends AbstractFormBuilderRow {
 
                 $exception = new ValidationException(null, 0, $exception);
                 foreach ($errors as $fieldName => $fieldErrors) {
-                    $exception->addErrors($this->name . '[' . $fieldName . ']', $fieldErrors);
+                    $positionOpen = strpos($fieldName, '[');
+                    if ($positionOpen) {
+                        $errorFieldName = $this->name . '[' . substr($fieldName, 0, $positionOpen) . ']' . substr($fieldName, $positionOpen);
+                    } else {
+                        $errorFieldName = $this->name . '[' . $fieldName . ']';
+                    }
+
+                    $exception->addErrors($errorFieldName, $fieldErrors);
                 }
 
                 throw $exception;
             }
 
             $this->data[$rowName] = $row->getData();
-
         }
     }
 

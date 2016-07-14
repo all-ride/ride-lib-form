@@ -72,11 +72,10 @@ class ComponentRow extends AbstractFormBuilderRow {
      */
     public function processData(array $values) {
         $this->initialize();
-
         if (isset($values[$this->name])) {
             if (is_array($values[$this->name])) {
                 $values = $values[$this->name];
-            } else {
+            } else if (!$this->getOption(self::OPTION_EMBED)) {
                 $values = array();
             }
         }

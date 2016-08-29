@@ -224,7 +224,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
                 continue;
             }
 
-            $javascripts += $row->getJavascripts();
+            $javascripts = array_merge($javascripts, $row->getJavascripts());
         }
 
         return $javascripts;
@@ -246,7 +246,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
                 continue;
             }
 
-            $inlineJavascripts += $row->getInlineJavascripts();
+            $inlineJavascripts = array_merge($inlineJavascripts, $row->getInlineJavascripts());
         }
 
         return $inlineJavascripts;
@@ -270,7 +270,7 @@ abstract class AbstractFormBuilderRow extends AbstractRow implements FormBuilder
 
             $rowStyles = $row->getStyles();
             if ($rowStyles) {
-                $styles += $rowStyles;
+                $styles = array_merge($styles, $rowStyles);
             }
         }
 

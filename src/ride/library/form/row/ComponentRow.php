@@ -255,7 +255,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $javascripts += $component->getJavascripts();
+            $javascripts = array_merge($javascripts, $component->getJavascripts());
         }
 
         return $javascripts;
@@ -270,7 +270,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $inlineJavascripts += $component->getInlineJavascripts();
+            $inlineJavascripts = array_merge($inlineJavascripts, $component->getInlineJavascripts());
         }
 
         return $inlineJavascripts;
@@ -285,7 +285,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $styles += $component->getStyles();
+            $styles = array_merge($styles, $component->getStyles());
         }
 
         return $styles;

@@ -3,7 +3,9 @@
 namespace ride\library\form\row;
 
 use ride\library\form\widget\GenericWidget;
+use ride\library\validation\exception\ValidationException;
 use ride\library\validation\factory\ValidationFactory;
+use ride\library\validation\ValidationError;
 
 /**
  * Time row
@@ -34,26 +36,28 @@ class TimeRow extends AbstractRow {
      * @return null
      */
     public function setData($data) {
-        if (is_numeric($data)) {
-            $hours = floor($data / 3600);
-            $remaining = $data % 3600;
-            $minutes = floor($remaining / 60);
+        if (!is_numeric($data)) {
+            return $data;
+        }
+        
+        $hours = floor($data / 3600);
+        $remaining = $data % 3600;
+        $minutes = floor($remaining / 60);
 
-            if ($this->getOption(self::OPTION_HOURS, true)) {
-                $data = $hours . ':' . str_pad($minutes, 2, '0', STR_PAD_LEFT);
-            } else {
-                $minutes += $hours * 60;
+        if ($this->getOption(self::OPTION_HOURS, true)) {
+            $data = $hours . ':' . str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        } else {
+            $minutes += $hours * 60;
 
-                $data = $minutes;
-            }
-
-            if ($this->getOption(self::OPTION_SECONDS)) {
-                $seconds = $remaining % 60;
-
-                $data .= ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT);
-            }
+            $data = $minutes;
         }
 
+        if ($this->getOption(self::OPTION_SECONDS)) {
+            $seconds = $remaining % 60;
+
+            $data .= ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT);
+        }
+        
         parent::setData($data);
     }
 

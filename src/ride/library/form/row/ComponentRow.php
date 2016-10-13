@@ -76,7 +76,7 @@ class ComponentRow extends AbstractFormBuilderRow {
         if (isset($values[$this->name])) {
             if (is_array($values[$this->name])) {
                 $values = $values[$this->name];
-            } else {
+            } else if (!$this->getOption(self::OPTION_EMBED)) {
                 $values = array();
             }
         }
@@ -90,14 +90,20 @@ class ComponentRow extends AbstractFormBuilderRow {
 
                 $exception = new ValidationException(null, 0, $exception);
                 foreach ($errors as $fieldName => $fieldErrors) {
-                    $exception->addErrors($this->name . '[' . $fieldName . ']', $fieldErrors);
+                    $positionOpen = strpos($fieldName, '[');
+                    if ($positionOpen) {
+                        $errorFieldName = $this->name . '[' . substr($fieldName, 0, $positionOpen) . ']' . substr($fieldName, $positionOpen);
+                    } else {
+                        $errorFieldName = $this->name . '[' . $fieldName . ']';
+                    }
+
+                    $exception->addErrors($errorFieldName, $fieldErrors);
                 }
 
                 throw $exception;
             }
 
             $this->data[$rowName] = $row->getData();
-
         }
     }
 
@@ -250,7 +256,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $javascripts += $component->getJavascripts();
+            $javascripts = array_merge($javascripts, $component->getJavascripts());
         }
 
         return $javascripts;
@@ -265,7 +271,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $inlineJavascripts += $component->getInlineJavascripts();
+            $inlineJavascripts = array_merge($inlineJavascripts, $component->getInlineJavascripts());
         }
 
         return $inlineJavascripts;
@@ -280,7 +286,7 @@ class ComponentRow extends AbstractFormBuilderRow {
 
         $component = $this->getComponent();
         if ($component instanceof HtmlComponent) {
-            $styles += $component->getStyles();
+            $styles = array_merge($styles, $component->getStyles());
         }
 
         return $styles;

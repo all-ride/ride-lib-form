@@ -53,6 +53,44 @@ abstract class AbstractComponentForm extends AbstractForm {
     }
 
     /**
+     * Validates this form
+     * @return null
+     * @throws \ride\library\validation\exception\ValidationException when the
+     * data in the form could not be validated
+     */
+    public function validate() {
+        try {
+            parent::validate();
+        } catch (ValidationException $exception) {
+            $errors = $exception->getAllErrors();
+            $id = $this->getId();
+
+            $exception = new ValidationException(null, 0, $exception);
+            foreach ($errors as $fieldName => $fieldErrors) {
+                $positionOpen = strpos($fieldName, '[');
+
+                if ($positionOpen) {
+                    $errorFieldName = substr($fieldName, 0, $positionOpen);
+                    $errorSuffix = substr($fieldName, $positionOpen);
+                } else {
+                    $errorFieldName = $fieldName;
+                    $errorSuffix = '';
+                }
+
+                if (isset($this->rows[$errorFieldName])) {
+                    $errorFieldName = $id . '[' . $errorFieldName . ']' . $errorSuffix;
+                } else {
+                    $errorFieldName = $fieldName;
+                }
+
+                $exception->addErrors($errorFieldName, $fieldErrors);
+            }
+
+            throw $exception;
+        }
+    }
+
+    /**
      * Gets the data from this form
      * @return mixed Data of this form
      */

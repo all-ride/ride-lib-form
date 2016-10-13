@@ -77,6 +77,8 @@ class WysiwygRow extends TextRow implements HtmlRow {
         $this->setOption(self::OPTION_ATTRIBUTES, $attributes);
 
         parent::buildRow($namePrefix, $idPrefix, $validationFactory);
+
+        $this->widget->setAttribute('required', null);
     }
 
     /**

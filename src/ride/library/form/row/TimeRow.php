@@ -3,9 +3,7 @@
 namespace ride\library\form\row;
 
 use ride\library\form\widget\GenericWidget;
-use ride\library\validation\exception\ValidationException;
 use ride\library\validation\factory\ValidationFactory;
-use ride\library\validation\ValidationError;
 
 /**
  * Time row
@@ -39,7 +37,7 @@ class TimeRow extends AbstractRow {
         if (!is_numeric($data)) {
             return $data;
         }
-        
+
         $hours = floor($data / 3600);
         $remaining = $data % 3600;
         $minutes = floor($remaining / 60);
@@ -57,7 +55,7 @@ class TimeRow extends AbstractRow {
 
             $data .= ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT);
         }
-        
+
         parent::setData($data);
     }
 

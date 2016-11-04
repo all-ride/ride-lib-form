@@ -188,6 +188,7 @@ abstract class AbstractComponentForm extends AbstractForm {
         $actionRow = null;
         if (isset($this->rows[self::ROW_ACTION])) {
             $actionRow = $this->rows[self::ROW_ACTION];
+            $actionRow->buildRow('', '', $this->validationFactory);
         }
 
         $this->rows = $this->componentRow->getRows();

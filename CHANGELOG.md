@@ -1,1 +1,7 @@
-# Changelog
+## [1.0.1] - 2016-11-04
+### Updated
+- AbstractComponentRow: build the action row
+
+## [1.0.0]
+### Updated
+- composer.json for first stable release

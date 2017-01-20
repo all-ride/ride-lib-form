@@ -92,7 +92,7 @@ class DateRow extends AbstractRow {
         }
 
         if ($this->getOption(self::OPTION_ROUND)) {
-            $result -= ($result + date('Z', $result)) % 86400;
+            $result = mktime(0, 0, 0, date("n", $result), date("j", $result), date("Y", $result));
         }
 
         return $result;

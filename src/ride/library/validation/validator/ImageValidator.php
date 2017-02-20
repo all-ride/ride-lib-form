@@ -169,7 +169,7 @@ class ImageValidator extends AbstractValidator {
      * @param array $options options for this validator
      * @return null
      */
-    public function __construct(array $options = array()) {
+    public function __construct(array $options = null) {
         parent::__construct($options);
 
         $this->isRequired = false;

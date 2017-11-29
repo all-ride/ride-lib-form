@@ -273,19 +273,16 @@ class ImageValidator extends AbstractValidator {
         try {
             if (!$value instanceof File) {
                 $file = $this->fileBrowser->getFile($value);
+                if (!$file) {
+                    $file = $this->fileBrowser->getPublicFile($value);
+                }
             } else {
                 $file = $value;
             }
 
             $image = $this->imageFactory->createImage();
 
-            try {
-                $image->read($file);
-            } catch (Exception $exception) {
-                $file = $this->fileBrowser->getPublicFile($value);
-
-                $image->read($file);
-            }
+            $image->read($file);
         } catch (Exception $exception) {
             $parameters['message'] = $exception->getMessage();
 

@@ -1,6 +1,14 @@
-## [1.0.2] - 2017-11-29
+## [1.0.4] - 2017-11-29
 ### Updated
 - ImageValidator: fixed file retrieval before validating
+
+## [1.0.3] - 2017-02-20
+### Updated
+- ImageValidator: fixed a bug with the method signature of __construct not working in PHP 7.1
+
+## [1.0.2] - 2017-01-20
+### Updated
+- DateRow: fixed a bug with dates on Daylight Savings Time days
 
 ## [1.0.1] - 2016-11-04
 ### Updated

@@ -280,8 +280,16 @@ class ImageValidator extends AbstractValidator {
                 $file = $value;
             }
 
-            $image = $this->imageFactory->createImage();
+            if (!$file) {
+                $parameters['message'] = 'Invalid file provided';
 
+                $error = new ValidationError(self::CODE, self::MESSAGE, $parameters);
+                $this->addError($error);
+
+                return false;
+            }
+
+            $image = $this->imageFactory->createImage();
             $image->read($file);
         } catch (Exception $exception) {
             $parameters['message'] = $exception->getMessage();

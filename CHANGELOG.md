@@ -1,3 +1,7 @@
+## [1.0.5] - 2019-08-27
+### Updated
+- ImageValidator: catch null before validating
+
 ## [1.0.4] - 2017-11-29
 ### Updated
 - ImageValidator: fixed file retrieval before validating

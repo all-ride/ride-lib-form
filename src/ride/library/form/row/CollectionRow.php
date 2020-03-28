@@ -48,6 +48,12 @@ class CollectionRow extends AbstractFormBuilderRow {
     const OPTION_DISABLE_REMOVE = 'disable_remove';
 
     /**
+     * Option for the prototype index
+     * @var string
+     */
+    const OPTION_PROTOTYPE = 'prototype';
+
+    /**
      * Key for the prototype value
      * @var string
      */
@@ -110,8 +116,10 @@ class CollectionRow extends AbstractFormBuilderRow {
         }
 
         if (!$this->widget && $this->rows) {
+            $prototype = $this->getOption(self::OPTION_PROTOTYPE, self::VALUE_PROTOTYPE);
+
             foreach ($this->rows as $name => $row) {
-                if ($name === self::VALUE_PROTOTYPE) {
+                if ($name === $prototype) {
                     continue;
                 }
 
@@ -153,6 +161,7 @@ class CollectionRow extends AbstractFormBuilderRow {
     protected function buildData() {
         $type = $this->getOption(self::OPTION_TYPE);
         $options = $this->getOption(self::OPTION_OPTIONS, array());
+        $prototype = $this->getOption(self::OPTION_PROTOTYPE, self::VALUE_PROTOTYPE);
 
         if ($type !== ComponentRow::TYPE) {
             $options[self::OPTION_MULTIPLE] = true;
@@ -187,7 +196,7 @@ class CollectionRow extends AbstractFormBuilderRow {
         } else {
             $data = array();
         }
-        $data[self::VALUE_PROTOTYPE] = null;
+        $data[$prototype] = null;
 
         if (isset($options[ComponentRow::OPTION_COMPONENT])) {
             $component = $options[ComponentRow::OPTION_COMPONENT];
@@ -208,7 +217,7 @@ class CollectionRow extends AbstractFormBuilderRow {
 
             $row = $this->rowFactory->createRow($type, $this->rowName, $options);
 
-            if ($key !== self::VALUE_PROTOTYPE && isset($this->processedData)) {
+            if ($key !== $prototype && isset($this->processedData)) {
                 if (isset($this->oldData[$key])) {
                     $row->setData($this->oldData[$key]);
                 }
@@ -242,13 +251,15 @@ class CollectionRow extends AbstractFormBuilderRow {
      * @return null
      */
     public function applyValidation(ValidationException $validationException) {
+        $prototype = $this->getOption(self::OPTION_PROTOTYPE, self::VALUE_PROTOTYPE);
+
         // apply validation on inner rows
         $type = $this->getOption(self::OPTION_TYPE);
         if ($type !== ComponentRow::TYPE) {
             parent::applyValidation($validationException);
         } else {
             foreach ($this->rows as $key => $row) {
-                if ($key === self::VALUE_PROTOTYPE) {
+                if ($key === $prototype) {
                     continue;
                 }
 

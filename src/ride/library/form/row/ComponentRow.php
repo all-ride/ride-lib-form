@@ -88,7 +88,7 @@ class ComponentRow extends AbstractFormBuilderRow {
             } catch (ValidationException $exception) {
                 $errors = $exception->getAllErrors();
 
-                $exception = new ValidationException(null, 0, $exception);
+                $exception = new ValidationException('Validation errors occured', 0, $exception);
                 foreach ($errors as $fieldName => $fieldErrors) {
                     $positionOpen = strpos($fieldName, '[');
                     if ($positionOpen) {

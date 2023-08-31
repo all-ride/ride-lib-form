@@ -1,3 +1,6 @@
+## [1.1.0] - 2023-08-31
+### Updated
+- Added Message to validatione exception, cannot be null
 ## [1.0.5] - 2019-08-27
 ### Updated
 - ImageValidator: catch null before validating

@@ -116,6 +116,8 @@ abstract class AbstractRow implements Row {
      */
     protected $validators;
 
+    public $data;
+
     /**
      * Constructs a new form row
      * @param string $name Name of the row

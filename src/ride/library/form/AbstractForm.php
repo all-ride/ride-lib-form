@@ -65,6 +65,16 @@ abstract class AbstractForm implements Form {
      */
     protected $validationFactory;
 
+    protected $rowFactory;
+
+    protected $id;
+
+    protected $isSubmitted;
+
+    protected $dataNeedsProcessing;
+
+    protected $request;
+
     /**
      * Constructs a new form
      * @return null

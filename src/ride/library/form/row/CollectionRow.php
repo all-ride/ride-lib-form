@@ -65,6 +65,20 @@ class CollectionRow extends AbstractFormBuilderRow {
      */
     protected $validationErrors;
 
+    protected $oldData;
+
+    protected $processedData;
+
+    protected $rowNamePrefix;
+
+    protected $rowName;
+
+    protected $rowIdPrefix;
+
+    protected $rowId;
+
+    protected $validationFactory;
+
     /**
      * Processes the request and updates the data of this row
      * @param array $values Submitted values

@@ -18,7 +18,8 @@
     "autoload": {
         "psr-0": {
             "ride\\library\\form\\": ["src/"],
-            "ride\\library\\validation\\validator\\ImageValidator": ["src/"]
+            "ride\\library\\validation\\validator\\ImageValidator": ["src/"],
+            "ride\\library\\validation\\validator\\DateFormatValidator": ["src/"]
         }
     }
 }

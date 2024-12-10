@@ -41,6 +41,12 @@ class DateRow extends AbstractRow {
     const OPTION_ROUND = 'round';
 
     /**
+     * The original date input from the form
+     * @var string
+     */
+    protected $formDate;
+
+    /**
      * Gets the date format
      * @return string
      */
@@ -55,6 +61,7 @@ class DateRow extends AbstractRow {
      */
     public function processData(array $values) {
         if (isset($values[$this->name])) {
+            $this->formDate = $values[$this->name];
             $this->data = $this->parseValue($values[$this->name]);
         }
     }
@@ -110,6 +117,10 @@ class DateRow extends AbstractRow {
             'required' => false,
             'error.numeric' => 'error.validation.date.format',
         ));
+
+        $this->validators[] = $validationFactory->createValidator('date_format', array(
+            'date_row' => $this,
+        ));
     }
 
     /**
@@ -128,6 +139,14 @@ class DateRow extends AbstractRow {
         $attributes['data-format-jquery'] = $dateConverter->convertFormatFromPhp($format);
 
         return new DateWidget('date', $name, $default, $attributes);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFormDate()
+    {
+        return $this->formDate;
     }
 
 }

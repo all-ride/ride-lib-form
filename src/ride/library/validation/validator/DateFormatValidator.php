@@ -45,7 +45,7 @@ class DateFormatValidator extends AbstractValidator
      */
     public function isValid($value) {
         $processedDate = (new DateTime())->setTimestamp($value)->format($this->dateFormat);
-        if ($value && $this->dateRow && $this->dateRow->getFormDate() !== $processedDate) {
+        if ($value && $this->dateRow && $this->dateRow->getFormDate() && $this->dateRow->getFormDate() !== $processedDate) {
             $this->addValidationError('error.validation.date.format',
                 'error.validation.date.format',
                 [

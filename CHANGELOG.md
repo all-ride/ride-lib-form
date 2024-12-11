@@ -1,3 +1,6 @@
+## [1.2.1] - 2024-12-11
+### Updated
+- Add date format wellformedness validation to date row
 ## [1.2.0] - 2024-06-26
 ### Updated
 - Updated to be compatible with php 8.3

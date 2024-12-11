@@ -1,3 +1,6 @@
+## [1.2.2] - 2024-12-11
+### Updated
+- Removed dependency for date_format and moved to app-form
 ## [1.2.1] - 2024-12-11
 ### Updated
 - Add date format wellformedness validation to date row

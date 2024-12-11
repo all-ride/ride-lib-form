@@ -1,3 +1,6 @@
+## [1.2.3] - 2024-12-11
+### Updated
+- Disabled form fields do not have values, so when the original form value is null the validation should pass.
 ## [1.2.2] - 2024-12-11
 ### Updated
 - Removed dependency for date_format and moved to app-form
